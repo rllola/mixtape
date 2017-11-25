@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx'
 import { fileEncode } from '../utils/encode'
 import ZeroFrame from 'zeroframe'
+import sanitize from 'sanitize-filename'
 
 class Site extends ZeroFrame {
   @observable serverInfo
@@ -80,7 +81,7 @@ class Site extends ZeroFrame {
         data = JSON.parse(res)
       }
 
-      if ( data.optional === '(?!data.json)' ) {
+      if (data.optional === '(?!data.json)') {
         return callback()
       }
       data.optional = '(?!data.json)'
@@ -117,15 +118,14 @@ class Site extends ZeroFrame {
     let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address
 
     this.checkContentJson(innerPath + '/content.json', (res) => {
-      this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + file.name, file.size], (initRes) => {
-
+      this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize(file.name).replace(/[^\x00-\x7F]/g, ''), file.size], (initRes) => {
         var formdata = new FormData()
         formdata.append(file.name, file)
 
         var req = new XMLHttpRequest()
         req.upload.addEventListener('progress', console.log)
         req.upload.addEventListener('loadend', () => {
-          this.registerSongInDataJson(artist, title, file.name, hub, () => {
+          this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, ''), hub, () => {
             let innerPathContentJson = innerPath + '/content.json'
             let innerPathDataJson = innerPath + '/data.json'
             this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {

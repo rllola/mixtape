@@ -55,7 +55,7 @@ class Player extends Component {
       <Sidebar.Pushable style={{ height: '100vh' }}>
         <Sidebar animation='uncover' width='wide' visible={this.visible} style={{ backgroundColor: '#1b1c1d' }}>
 
-          <SidebarPlaylist hub={this.hub} />
+          <SidebarPlaylist hub={this.props.location.state.hub} />
 
         </Sidebar>
         <Sidebar.Pusher as={Grid} padded style={{backgroundImage: 'url(assets/img/1510335890477.jpg)'}}>

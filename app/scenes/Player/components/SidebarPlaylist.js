@@ -21,13 +21,15 @@ class SidebarPlaylist extends Component {
   }
 
   render () {
+    const { title, description } = this.props.hub.content
+
     return (
       <div>
         {/* Sidebar header */}
         <Segment inverted basic>
-          <Header as='h1'>Playlist Title</Header>
+          <Header as='h1'>{ title }</Header>
           <br />
-          <p>Description</p>
+          <p>{ description }</p>
           <br />
           <br />
           <Button onClick={this.show.bind(this)} fluid inverted basic>Add</Button>
@@ -37,11 +39,11 @@ class SidebarPlaylist extends Component {
         <Modal dimmer='blurring' open={this.open} onClose={this.close.bind(this)}>
           <Modal.Header>Upload Form</Modal.Header>
           {this.props.site.isConnected
-            ? <Modal.Content image>
+            ? <Modal.Content>
               {/* Select thumbnail */}
-              <Image wrapped size='medium' src='assets/img/thumbnail.png' />
+              {/* <Image wrapped size='medium' src='assets/img/thumbnail.png' /> */}
               <Modal.Description>
-                <Upload playlist={this.props.hub} postUploadAction={() => { this.props.playlist.fetchSongsByHub(this.props.hub) }} />
+                <Upload playlist={this.props.hub.address} postUploadAction={() => { this.props.playlist.fetchSongsByHub(this.props.hub.address) }} />
               </Modal.Description>
             </Modal.Content>
             : <Modal.Content textAlign='center'><SelectUser /></Modal.Content>}

@@ -24,7 +24,10 @@ class MyHubs extends Component {
                   key={value[0]}
                   link
                   as={Link}
-                  to={'/playlist/' + value[0]}
+                  to={{
+                    pathname: '/playlist/' + value[0],
+                    state: { hub: value[1] }
+                  }}
                   header={value[1].content.title}
                   meta={moment(value[1].content.modified, 'X').fromNow()}
                   description={value[1].content.description} />
