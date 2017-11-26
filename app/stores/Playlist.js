@@ -27,6 +27,7 @@ class Playlist extends EventEmitter {
 
   @action
   setPlay (song) {
+    console.log(song.site)
     this.play = song
   }
 
@@ -54,10 +55,11 @@ class Playlist extends EventEmitter {
   }
 
   fetchSongsByHub (hub) {
-    let query = 'SELECT * FROM song JOIN json ON song.json_id = json.json_id'
+    let query = 'SELECT * FROM song JOIN json ON song.json_id = json.json_id WHERE json.site="' + hub + '"'
     return new Promise((resolve, reject) => {
       this.siteStore.cmdp('dbQuery', [query])
       .then((response) => {
+        console.log(response)
         this.songs = response
         if (!this.play) {
           this.play = response[this.index]
