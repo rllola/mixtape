@@ -1,3 +1,4 @@
+var webpack = require('webpack')
 var path = require('path')
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
@@ -17,6 +18,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new UglifyJsPlugin()
+    // new UglifyJsPlugin({sourceMap: true}),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
   ]
 }

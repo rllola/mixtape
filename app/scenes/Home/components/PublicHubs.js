@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Grid, Button } from 'semantic-ui-react'
-import publicAddress from '../../../data/data.json'
+import publicAddress from '../../../data'
 
 const MAX_PUBLIC_HUBS_SHOWN = 9
 
