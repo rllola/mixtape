@@ -59,7 +59,6 @@ class Playlist extends EventEmitter {
     return new Promise((resolve, reject) => {
       this.siteStore.cmdp('dbQuery', [query])
       .then((response) => {
-        console.log(response)
         this.songs = response
         if (!this.play) {
           this.play = response[this.index]
