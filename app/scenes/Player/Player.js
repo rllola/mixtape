@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Grid } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
+import { Link } from 'react-router-dom'
 
 import SidebarPlaylist from './components/SidebarPlaylist'
 
@@ -56,6 +57,12 @@ class Player extends Component {
         <Sidebar animation='uncover' width='wide' visible={this.visible} style={{ backgroundColor: '#1b1c1d' }}>
 
           <SidebarPlaylist hub={this.props.location.state.hub} />
+
+          <div style={{  textAlign: 'center', marginTop: '15px' }}>
+            <Link to='/' style={{ color: 'white' }}>
+              <strong>Back</strong>
+            </Link>
+          </div>
 
         </Sidebar>
         <Sidebar.Pusher as={Grid} padded style={{backgroundImage: 'url(assets/img/1510335890477.jpg)'}}>

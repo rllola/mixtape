@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Segment, Header, Modal, Button, Image } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
+import { Link } from 'react-router-dom'
 
 import Upload from './Upload'
 import SongList from './SongList/'

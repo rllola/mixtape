@@ -1,3 +1,5 @@
 # TODO
 
-- [ ] Too big to sign
+- [x] Too big to sign
+- [ ] Fix router
+- [ ] Fix icons
