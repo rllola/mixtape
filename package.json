@@ -2,8 +2,8 @@
   "name": "Mixtape",
   "version": "0.0.0",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
+    "build": "webpack --config webpack.config.prod.js",
+    "watch": "webpack --watch --config webpack.config.dev.js",
     "test": "echo 'No test lol. Only Talent.' && return 0"
   },
   "author": "Lola <lola@zeroid.bit>",

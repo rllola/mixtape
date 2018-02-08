@@ -1,6 +1,5 @@
 var webpack = require('webpack')
 var path = require('path')
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: './app/index.js',
@@ -8,7 +7,7 @@ module.exports = {
     filename: 'all.js',
     path: path.resolve(__dirname, 'dist')
   },
-  devtool: 'inline-source-map',
+  devtool: 'cheap-eval-source-map',
   module: {
     rules: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
@@ -18,7 +17,6 @@ module.exports = {
     ]
   },
   plugins: [
-    // new UglifyJsPlugin({sourceMap: true}),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
