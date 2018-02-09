@@ -11,6 +11,6 @@ tar xvpfz master.tar.gz
 echo "==== COPY FILES ===="
 mkdir ZeroNet-master/data
 mkdir ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4
-mv mixtape/ ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
+mv mixtape/* ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
 cd ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
 ls
