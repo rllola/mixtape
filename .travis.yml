@@ -9,9 +9,12 @@ install:
 script:
   - npm test
 
+before_deploy:
+  - bash scripts/provide.sh
+
 deploy:
   # deploy develop to the staging environment
   - provider: script
-    script: bash deploy.sh
+    script: bash scripts/deploy.sh
     on:
       branch: travis
