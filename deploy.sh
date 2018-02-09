@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "===== INSTALL DEPENDENCIES ====="
-apt install msgpack-python python-gevent wget
+sudo apt install msgpack-python python-gevent wget
 
 echo "===== INSTALL ZERONET ====="
 wget https://github.com/HelloZeroNet/ZeroNet/archive/master.tar.gz
