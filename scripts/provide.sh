@@ -9,8 +9,7 @@ wget https://github.com/HelloZeroNet/ZeroNet/archive/master.tar.gz
 tar xvpfz master.tar.gz
 
 echo "==== COPY FILES ===="
-cd ZeroNet-master
-ls
+mkdir ZeroNet-master/data
 mkdir ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4
 mv mixtape/ ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
 cd ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
