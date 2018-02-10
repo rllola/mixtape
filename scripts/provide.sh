@@ -12,5 +12,7 @@ echo "==== COPY FILES ===="
 mkdir ZeroNet-master/data
 mkdir ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4
 mv mixtape/* ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
+
+echo "==== BUILD DIST ===="
 cd ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
-ls
+npm run build
