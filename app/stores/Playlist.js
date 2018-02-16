@@ -1,6 +1,8 @@
 import { observable, computed, action } from 'mobx'
 import EventEmitter from 'events'
 
+import Constants from '../utils/constants'
+
 class Playlist extends EventEmitter {
   @observable songs = []
   @observable play
@@ -12,10 +14,16 @@ class Playlist extends EventEmitter {
     this.siteStore = siteStore
 
     this.siteStore.eventEmitter.on('fileDone', (event) => {
-      console.log(event)
       if (event.address === this.play.site) {
         // Reload list
-        console.log(event)
+        // TEMPORARY
+        if (event.event[1].indexOf('content.json') > -1 || event.event[1].indexOf('data.json') > -1 ) {
+          // this.siteStore.showWrapperNotification('A new song has been added. The page need to be reloaded.')
+          console.log('New song added')
+        } else {
+          // Update file info
+          this.siteStore.showWrapperNotification('We received a new piece of the song')
+        }
       }
     })
   }
@@ -23,7 +31,7 @@ class Playlist extends EventEmitter {
   @computed get
   src () {
     if (this.play) {
-      return '/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/merged-Mixtape/' + this.play.site + '/' + this.play.directory + '/' + this.play.file_name
+      return '/' + Constants.APP_ID + '/merged-Mixtape/' + this.play.site + '/' + this.play.directory + '/' + this.play.file_name
     }
     return null
   }
@@ -67,6 +75,7 @@ class Playlist extends EventEmitter {
       this.siteStore.cmdp('dbQuery', [query])
       .then((response) => {
         this.songs = response
+
         if (!this.play) {
           this.play = response[this.index]
         }

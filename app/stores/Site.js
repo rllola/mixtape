@@ -165,6 +165,10 @@ class Site extends ZeroFrame {
   selectUser () {
     this.cmd('certSelect', {'accepted_domains': ['zeroid.bit'], 'accept_any': true}, () => {})
   }
+
+  showWrapperNotification (message) {
+    this.cmd('wrapperNotification', ['info', message, 10000])
+  }
 }
 
 export default Site
