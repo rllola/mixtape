@@ -1,5 +1,6 @@
 import { observable, action, computed } from 'mobx'
 import { fileEncode } from '../utils/encode'
+import EventEmitter from 'events'
 import ZeroFrame from 'zeroframe'
 import sanitize from 'sanitize-filename'
 
@@ -19,6 +20,8 @@ class Site extends ZeroFrame {
         this.cmd('wrapperPermissionAdd', 'Merger:Mixtape')
       }
     })
+
+    this.eventEmitter = new EventEmitter()
   }
 
   @computed
@@ -52,6 +55,10 @@ class Site extends ZeroFrame {
   onRequest (cmd, message) {
     if (cmd === 'setSiteInfo') {
       this.setSiteInfo(message.params)
+      if (message.params.event[0] === 'file_done') {
+        console.log(message)
+        this.eventEmitter.emit('fileDone', message.params)
+      }
     } else {
       console.log('Unknown command ', cmd, message.params)
     }
@@ -122,9 +129,12 @@ class Site extends ZeroFrame {
         var formdata = new FormData()
         formdata.append(file.name, file)
 
+        console.log(initRes)
+
         var req = new XMLHttpRequest()
         req.upload.addEventListener('progress', console.log)
-        req.upload.addEventListener('loadend', () => {
+        req.upload.addEventListener('loadend', (res) => {
+          console.log(res)
           this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, ''), hub, () => {
             let innerPathContentJson = innerPath + '/content.json'
             let innerPathDataJson = innerPath + '/data.json'

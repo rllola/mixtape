@@ -7,7 +7,9 @@ class Thumbnail extends Component {
   constructor () {
     super()
 
-    this.state = {active: false}
+    this.state = {
+      active: false
+    }
   }
 
   handleShow = () => this.setState({ active: true })
@@ -21,7 +23,17 @@ class Thumbnail extends Component {
       MsUserSelect: 'none', /* IE10+/Edge */
       userSelect: 'none' /* Standard */
     }
-    const content = (<div style={contentStyle}>{this.props.song.artist + ' - ' + this.props.song.title}</div>)
+
+    const content =
+    (<div style={contentStyle}>
+      {this.props.song.artist + ' - ' + this.props.song.title}
+      <br />
+      <br />
+      { this.props.fileInfo.downloaded_percent || 0 }%
+    </div>)
+
+    // console.log(this.props.song)
+    // console.log(this.props.fileInfo)
 
     return (
       <Dimmer.Dimmable
@@ -30,7 +42,7 @@ class Thumbnail extends Component {
         dimmer={{ active, content }}
         onMouseEnter={this.handleShow}
         onMouseLeave={this.handleHide}
-        onClick={() => { this.props.playlist.playSong(this.props.song.song_id) }}
+        onClick={() => { this.props.playlist.playSong(this.props.index) }}
         style={{cursor: 'pointer'}}
         src='assets/img/thumbnail.png'
       />

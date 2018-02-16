@@ -10,6 +10,14 @@ class Playlist extends EventEmitter {
     super()
 
     this.siteStore = siteStore
+
+    this.siteStore.eventEmitter.on('fileDone', (event) => {
+      console.log(event)
+      if (event.address === this.play.site) {
+        // Reload list
+        console.log(event)
+      }
+    })
   }
 
   @computed get
@@ -27,7 +35,6 @@ class Playlist extends EventEmitter {
 
   @action
   setPlay (song) {
-    console.log(song.site)
     this.play = song
   }
 
@@ -69,6 +76,10 @@ class Playlist extends EventEmitter {
         reject()
       })
     })
+  }
+
+  fetchOptionalFileInfo (innerPath) {
+    return this.siteStore.cmdp('optionalFileInfo', {'inner_path': innerPath})
   }
 }
 
