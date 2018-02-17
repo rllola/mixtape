@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Form } from 'semantic-ui-react'
+import { Container, Form, Loader } from 'semantic-ui-react'
 import { inject } from 'mobx-react'
 
 @inject('site')
@@ -14,7 +14,9 @@ class Upload extends Component {
 
     this.state = {
       artist: '',
-      title: ''
+      title: '',
+      isUploading: false,
+      uploaded: false
     }
   }
 
@@ -32,7 +34,11 @@ class Upload extends Component {
 
   handleSubmit (event) {
     event.preventDefault()
-    this.props.site.registerSong(this.props.playlist, this.state.artist, this.state.title, this.state.file, this.props.postUploadAction)
+    this.setState({isUploading: true})
+    this.props.site.registerSong(this.props.playlist, this.state.artist, this.state.title, this.state.file, () => {
+      this.setState({isUploading: false, uploaded: true})
+      this.props.postUploadAction()
+    })
     this.setState({ title: '' })
     this.setState({ artist: '' })
   }
@@ -40,14 +46,19 @@ class Upload extends Component {
   render () {
     return (
       <Container>
-        <Form id='uploadForm' onSubmit={this.handleSubmit}>
+      { this.state.isUploading
+        ? <Loader size='massive'>Uploading file...</Loader>
+        : (this.state.uploaded
+          ? <h1>Thank you for uploading</h1>
+          : <Form id='uploadForm' onSubmit={this.handleSubmit}>
           <Form.Field>
             <Form.Input label='Artist' type='text' value={this.state.artist} onChange={this.handleArtistChange} />
             <Form.Input label='Title' type='text' value={this.state.title} onChange={this.handleTitleChange} />
             <Form.Input label='File' type='file' onChange={this.handleFileChange} />
           </Form.Field>
           <Form.Button>Submit</Form.Button>
-        </Form>
+        </Form>)
+      }
       </Container>
     )
   }

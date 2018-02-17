@@ -75,7 +75,7 @@ class Playlist extends EventEmitter {
       this.siteStore.cmdp('dbQuery', [query])
       .then((response) => {
         this.songs = response
-
+        console.log(response)
         if (!this.play) {
           this.play = response[this.index]
         }

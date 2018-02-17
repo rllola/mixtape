@@ -56,7 +56,6 @@ class Site extends ZeroFrame {
     if (cmd === 'setSiteInfo') {
       this.setSiteInfo(message.params)
       if (message.params.event[0] === 'file_done') {
-        console.log(message)
         this.eventEmitter.emit('fileDone', message.params)
       }
     } else {
@@ -125,7 +124,7 @@ class Site extends ZeroFrame {
     let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address
 
     this.checkContentJson(innerPath + '/content.json', (res) => {
-      this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize(file.name).replace(/[^\x00-\x7F]/g, ''), file.size], (initRes) => {
+      this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), file.size], (initRes) => {
         var formdata = new FormData()
         formdata.append(file.name, file)
 
@@ -134,8 +133,9 @@ class Site extends ZeroFrame {
         var req = new XMLHttpRequest()
         req.upload.addEventListener('progress', console.log)
         req.upload.addEventListener('loadend', (res) => {
+          // TODO : res give you the relative path of the file
           console.log(res)
-          this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, ''), hub, () => {
+          this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), hub, () => {
             let innerPathContentJson = innerPath + '/content.json'
             let innerPathDataJson = innerPath + '/data.json'
             this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
