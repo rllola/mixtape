@@ -140,8 +140,8 @@ class Site extends ZeroFrame {
             let innerPathDataJson = innerPath + '/data.json'
             this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
               if (res === 'ok') {
-                callback()
                 this.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
+                  callback()
                 })
               }
             })

@@ -70,7 +70,7 @@ class Playlist extends EventEmitter {
   }
 
   fetchSongsByHub (hub) {
-    let query = 'SELECT * FROM song JOIN json ON song.json_id = json.json_id WHERE json.site="' + hub + '"'
+    let query = 'SELECT * FROM song JOIN json ON song.json_id = json.json_id WHERE json.site="' + hub + '" ORDER BY date_added DESC'
     return new Promise((resolve, reject) => {
       this.siteStore.cmdp('dbQuery', [query])
       .then((response) => {
