@@ -10,9 +10,9 @@ tar xvpfz master.tar.gz
 
 echo "==== COPY FILES ===="
 mkdir ZeroNet-master/data
-mkdir ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4
-mv mixtape/* ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
+mkdir ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
+mv mixtape/* ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
 
 echo "==== BUILD DIST ===="
-cd ZeroNet-master/data/15t2dFCcxamJnPkp5yTFfxGReeFphvmnE4/
+cd ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
 npm run build
