@@ -1,0 +1,21 @@
+language: node_js
+sudo: required
+node_js:
+  - "7"
+
+install:
+  - npm install
+
+script:
+  - npm test
+
+before_deploy:
+  - bash scripts/provide.sh
+
+deploy:
+  # deploy develop to the staging environment
+  - provider: script
+    script: bash scripts/deploy.sh
+    skip: true
+    on:
+      branch: development

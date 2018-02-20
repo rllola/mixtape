@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo "===== DEPLOY ====="
+cd ../ZeroNet-master
+python zeronet.py peerPing 51.15.214.168
+python zeronet.py siteSign --publish 1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP $ZERONET_KEY_STAGING
+
+echo "===== EXIT ====="
+exit 0
