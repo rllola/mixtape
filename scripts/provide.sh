@@ -16,7 +16,7 @@ cd mixtape
 ls -A
 cd ..
 
-mv mixtape/* ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
+mv mixtape/* mixtape/.* ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
 
 echo "==== BUILD DIST ===="
 cd ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
