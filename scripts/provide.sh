@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 echo "===== INSTALL DEPENDENCIES ====="
-sudo apt install msgpack-python python-gevent wget
+sudo apt install python-pip msgpack-python python-gevent wget
+sudo pip install msgpack-python --upgrade
 
 echo "===== INSTALL ZERONET ====="
 cd ..
