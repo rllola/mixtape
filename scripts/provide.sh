@@ -11,11 +11,11 @@ tar xvpfz master.tar.gz
 echo "==== COPY FILES ===="
 mkdir ZeroNet-master/data
 mkdir ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
+ls -A
 mv mixtape/* ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
 
 echo "==== BUILD DIST ===="
 cd ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
-ls -A
 npm install
 ls -A
 npm run build
