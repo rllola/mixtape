@@ -11,7 +11,7 @@
  "signers_sign": "GweIkR2+7sDvLCl0w6QONahQMi/hp2vIfCjoh15V8gEGfDvW7Dbi+iHuZg4hF0SujCQQAWauQROYqA/y1bzG2p4=",
  "signs": {},
  "signs_required": 1,
- "title": "Mixtape Dev",
+ "title": "Mixtape Staging",
  "translate": ["js/all.js"],
  "zeronet_version": "0.6.2"
 }
