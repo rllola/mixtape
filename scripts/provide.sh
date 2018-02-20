@@ -15,4 +15,5 @@ mv mixtape/* ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
 
 echo "==== BUILD DIST ===="
 cd ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
+npm install
 npm run build
