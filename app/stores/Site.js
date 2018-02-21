@@ -120,7 +120,7 @@ class Site extends ZeroFrame {
     })
   }
 
-  registerSong (hub, artist, title, file, callback) {
+  registerSong (hub, artist, title, file, thumbnail, callback) {
     let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address
 
     this.checkContentJson(innerPath + '/content.json', (res) => {
@@ -135,16 +135,31 @@ class Site extends ZeroFrame {
         req.upload.addEventListener('loadend', (res) => {
           // TODO : res give you the relative path of the file
           console.log(res)
-          this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), hub, () => {
-            let innerPathContentJson = innerPath + '/content.json'
-            let innerPathDataJson = innerPath + '/data.json'
-            this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
-              if (res === 'ok') {
-                this.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
-                  callback()
+          this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize('thumbnail-' + file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), thumbnail.size], (initRes) => {
+            var formdataBis = new FormData()
+            formdataBis.append(thumbnail.name, thumbnail)
+
+            console.log(initRes)
+
+            var reqbis = new XMLHttpRequest()
+            reqbis.upload.addEventListener('progress', console.log)
+            reqbis.upload.addEventListener('loadend', (res) => {
+              console.log(res)
+              this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), hub, () => {
+                let innerPathContentJson = innerPath + '/content.json'
+                let innerPathDataJson = innerPath + '/data.json'
+                this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
+                  if (res === 'ok') {
+                    this.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
+                      callback()
+                    })
+                  }
                 })
-              }
+              })
             })
+            reqbis.withCredentials = true
+            reqbis.open('POST', initRes.url)
+            reqbis.send(formdataBis)
           })
         })
         req.withCredentials = true

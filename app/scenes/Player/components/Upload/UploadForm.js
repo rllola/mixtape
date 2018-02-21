@@ -44,7 +44,7 @@ class UploadForm extends Component {
   handleSubmit (event) {
     event.preventDefault()
     this.setState({isUploading: true})
-    this.props.site.registerSong(this.props.playlist, this.state.artist, this.state.title, this.state.file, () => {
+    this.props.site.registerSong(this.props.playlist, this.state.artist, this.state.title, this.state.file, this.state.thumbnailFile, () => {
       this.props.postUploadAction()
     })
     this.setState({ title: '' })
