@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import {
-  Button,
   Container,
   Divider,
   Header,
-  Segment
+  Segment,
+  Image,
+  Grid
 } from 'semantic-ui-react'
 
 import SelectUser from '../../components/SelectUser'
@@ -59,6 +60,27 @@ class Home extends Component {
 
             <PublicHubs />
 
+          </Container>
+        </Segment>
+
+        <Segment style={{ padding: '8em 0em' }} vertical>
+          <Container>
+            <Header as='h3' style={{ fontSize: '2em' }}>About</Header>
+
+            <Grid>
+              <Grid.Column width={6}>
+                <p style={{ fontSize: '1.1em', color: 'rgba(0,0,0,.6)' }}>
+                  Mixtape is a playlist sharing platform created with the purpose of sharing your favorite music with friends and stranger. It also allow building playlist with several of your friends which will be grouped in a "hub".
+                </p>
+                <Header as='h4'>Why ?</Header>
+                <p style={{ fontSize: '1.1em', color: 'rgba(0,0,0,.6)' }}>
+                  Because I can.
+                </p>
+              </Grid.Column>
+              <Grid.Column width={10}>
+                <Image src='assets/img/Mixtape.png' fluid/>
+              </Grid.Column>
+            </Grid>
           </Container>
         </Segment>
 
