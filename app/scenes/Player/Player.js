@@ -55,7 +55,7 @@ class Player extends Component {
 
     return (
       <Sidebar.Pushable style={{ height: '100vh' }}>
-        <Sidebar animation='uncover' width='wide' visible={this.visible} style={{ backgroundColor: '#1b1c1d' }}>
+        <Sidebar animation='uncover' width='wide' visible={this.visible} style={{ backgroundColor: '#1b1c1d', overflowX: 'hidden' }}>
 
           <SidebarPlaylist hub={this.props.location.state.hub} />
 

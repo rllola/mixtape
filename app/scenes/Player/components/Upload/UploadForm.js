@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Loader, Image, Modal, Container, Dimmer } from 'semantic-ui-react'
+import { Form, Loader, Image, Modal, Grid, Dimmer, Segment } from 'semantic-ui-react'
 import { inject } from 'mobx-react'
 
 @inject('site')
@@ -65,33 +65,37 @@ class UploadForm extends Component {
     return (
       isUploading
       ? <Loader size='massive'>Uploading file...</Loader>
-      : <Modal.Content image>
-
-        {/* Select thumbnail */}
-        <Dimmer.Dimmable
-          as={Image}
-          dimmed={active}
-          dimmer={{ active, content }}
-          wrapped
-          onMouseLeave={this.handleHide}
-          onMouseEnter={this.handleShow}
-          size='large'
-          src={this.state.srcThumbnail || 'assets/img/thumbnail.png'} />
-
-       {/* The rest of the form */}
-       <Modal.Description>
-        <Container>
-          <Form id='uploadForm' onSubmit={this.handleSubmit}>
-            <Form.Field>
-              <Form.Input id='fileSelector' type='file' style={{display:'none'}} value={this.state.thumbnail} onChange={this.handleThumbnailChange} />
-              <Form.Input label='Artist' type='text' value={this.state.artist} onChange={this.handleArtistChange} />
-              <Form.Input label='Title' type='text' value={this.state.title} onChange={this.handleTitleChange} />
-              <Form.Input label='File' type='file' onChange={this.handleFileChange} />
-            </Form.Field>
-            <Form.Button>Submit</Form.Button>
-          </Form>
-        </Container>
-        </Modal.Description>
+      : <Modal.Content>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={5}>
+              {/* Select thumbnail */}
+              <Dimmer.Dimmable
+                dimmed={active}
+                style={{ width: '240px', height: '196px'}}
+                onMouseLeave={this.handleHide}
+                onMouseEnter={this.handleShow} >
+                  <Dimmer active={active} content={content} />
+                  <Image
+                    id='thumbnail'
+                    style={{ width: '240px', height: '196px'}}
+                    src={this.state.srcThumbnail || 'assets/img/thumbnail.png'} />
+                </Dimmer.Dimmable>
+                <small>Click to select a thumbnail for your song (240x196).</small>
+            </Grid.Column>
+            <Grid.Column width={11}>
+              <Form id='uploadForm' onSubmit={this.handleSubmit}>
+                <Form.Field>
+                  <Form.Input id='fileSelector' type='file' style={{display:'none'}} value={this.state.thumbnail} onChange={this.handleThumbnailChange} />
+                  <Form.Input label='Artist' type='text' value={this.state.artist} onChange={this.handleArtistChange} />
+                  <Form.Input label='Title' type='text' value={this.state.title} onChange={this.handleTitleChange} />
+                  <Form.Input label='File' type='file' onChange={this.handleFileChange} />
+                </Form.Field>
+                <Form.Button>Submit</Form.Button>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Modal.Content>
     )
   }

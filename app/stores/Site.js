@@ -55,8 +55,10 @@ class Site extends ZeroFrame {
   onRequest (cmd, message) {
     if (cmd === 'setSiteInfo') {
       this.setSiteInfo(message.params)
-      if (message.params.event[0] === 'file_done') {
-        this.eventEmitter.emit('fileDone', message.params)
+      if (message.params.event) {
+        if (message.params.event[0] === 'file_done') {
+          this.eventEmitter.emit('fileDone', message.params)
+        }
       }
     } else {
       console.log('Unknown command ', cmd, message.params)
@@ -96,7 +98,7 @@ class Site extends ZeroFrame {
     })
   }
 
-  registerSongInDataJson (artist, title, fileName, hub, callback) {
+  registerSongInDataJson (artist, title, fileName, thumbnailFileName, hub, callback) {
     let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/data.json'
     this.cmd('fileGet', [innerPath, false], (res) => {
       let data = {
@@ -108,11 +110,14 @@ class Site extends ZeroFrame {
         data = JSON.parse(res)
       }
 
+      console.log(thumbnailFileName)
+
       data.song.push({
         'song_id': data.song.length,
         'title': title,
         'artist': artist,
         'file_name': fileName,
+        'thumbnail_file_name': thumbnailFileName,
         'date_added': new Date()
       })
 
@@ -124,28 +129,28 @@ class Site extends ZeroFrame {
     let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address
 
     this.checkContentJson(innerPath + '/content.json', (res) => {
-      this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), file.size], (initRes) => {
+      this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), file.size], (initResSong) => {
         var formdata = new FormData()
         formdata.append(file.name, file)
 
-        console.log(initRes)
+        console.log(initResSong)
 
         var req = new XMLHttpRequest()
         req.upload.addEventListener('progress', console.log)
         req.upload.addEventListener('loadend', (res) => {
           // TODO : res give you the relative path of the file
           console.log(res)
-          this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize('thumbnail-' + file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), thumbnail.size], (initRes) => {
+          this.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteInfo.auth_address + '/' + sanitize(thumbnail.name).replace(/[^\x00-\x7F]/g, ''), thumbnail.size], (initResThumbnail) => {
             var formdataBis = new FormData()
             formdataBis.append(thumbnail.name, thumbnail)
 
-            console.log(initRes)
+            console.log(initResThumbnail)
 
             var reqbis = new XMLHttpRequest()
             reqbis.upload.addEventListener('progress', console.log)
             reqbis.upload.addEventListener('loadend', (res) => {
               console.log(res)
-              this.registerSongInDataJson(artist, title, sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), hub, () => {
+              this.registerSongInDataJson(artist, title, initResSong.file_relative_path, initResThumbnail.file_relative_path, hub, () => {
                 let innerPathContentJson = innerPath + '/content.json'
                 let innerPathDataJson = innerPath + '/data.json'
                 this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
@@ -158,12 +163,12 @@ class Site extends ZeroFrame {
               })
             })
             reqbis.withCredentials = true
-            reqbis.open('POST', initRes.url)
+            reqbis.open('POST', initResThumbnail.url)
             reqbis.send(formdataBis)
           })
         })
         req.withCredentials = true
-        req.open('POST', initRes.url)
+        req.open('POST', initResSong.url)
         req.send(formdata)
       })
     })
