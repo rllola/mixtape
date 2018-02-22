@@ -70,7 +70,7 @@ class Home extends Component {
             <Grid>
               <Grid.Column width={6}>
                 <p style={{ fontSize: '1.1em', color: 'rgba(0,0,0,.6)' }}>
-                  Mixtape is a playlist sharing platform created with the purpose of sharing your favorite music with friends and stranger. It also allow building playlist with several of your friends which will be grouped in a "hub".
+                  Mixtape is a playlist sharing platform created with the purpose of sharing your favorite music with friends and strangers. It also allow building playlist with several of your friends which will be grouped in a "hub".
                 </p>
                 <Header as='h4'>Why ?</Header>
                 <p style={{ fontSize: '1.1em', color: 'rgba(0,0,0,.6)' }}>
