@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
 import { Link } from 'react-router-dom'
 
-import Upload from './Upload'
+import Upload from './Upload/'
 import SongList from './SongList/'
 import SelectUser from '../../../components/SelectUser'
 
@@ -40,13 +40,7 @@ class SidebarPlaylist extends Component {
         <Modal dimmer='blurring' open={this.open} onClose={this.close.bind(this)}>
           <Modal.Header>Upload Form</Modal.Header>
           {this.props.site.isConnected
-            ? <Modal.Content>
-              {/* Select thumbnail */}
-              {/* <Image wrapped size='medium' src='assets/img/thumbnail.png' /> */}
-              <Modal.Description>
-                <Upload playlist={this.props.hub.address} postUploadAction={() => { this.props.playlist.fetchSongsByHub(this.props.hub.address) }} />
-              </Modal.Description>
-            </Modal.Content>
+            ? <Upload playlist={this.props.hub.address} postUploadAction={() => { this.props.playlist.fetchSongsByHub(this.props.hub.address) }} />
             : <Modal.Content textAlign='center'><SelectUser /></Modal.Content>}
           <Modal.Actions>
             <Button color='black' onClick={this.close.bind(this)}>

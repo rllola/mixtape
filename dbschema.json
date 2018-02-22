@@ -36,11 +36,12 @@
 				["title", "TEXT"],
 				["artist", "TEXT"],
 				["file_name", "TEXT"],
+				["thumbnail_file_name", "TEXT"],
 				["date_added", "INTEGER"],
 				["json_id", "INTEGER REFERENCES json (json_id)"]
 			],
 			"indexes": ["CREATE UNIQUE INDEX song_key ON song(json_id, song_id)", "CREATE INDEX song_id ON song(song_id)", "CREATE INDEX added ON song(date_added)"],
-			"schema_changed": 1
+			"schema_changed": 2
 		}
 	}
 }
