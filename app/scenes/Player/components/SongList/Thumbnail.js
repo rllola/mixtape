@@ -43,7 +43,7 @@ class Thumbnail extends Component {
         onClick={() => { this.props.playlist.playSong(this.props.index) }}>
           <Dimmer style={{ cursor: 'pointer' }} active={active} content={content} />
           <Image
-            style={{ width: '170px', height: '141px' }}
+            style={{ width: '175px', height: '141px' }}
             src={this.props.song.thumbnail_file_name
               ? '/' + Constants.APP_ID + '/merged-Mixtape/' + this.props.song.site + '/' + this.props.song.directory + '/' + this.props.song.thumbnail_file_name
               : 'assets/img/thumbnail.png'} />
