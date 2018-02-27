@@ -9,8 +9,10 @@ class Site extends ZeroFrame {
   @observable siteInfo
   @observable hubs = []
 
-  constructor () {
+  constructor (history) {
     super()
+
+    this.history = history
 
     this.fetchServerInfo()
 
@@ -61,7 +63,17 @@ class Site extends ZeroFrame {
         }
       }
     } else {
-      console.log('Unknown command ', cmd, message.params)
+      if (cmd === 'wrapperPopState') {
+        let array = message.params.href.split('?')
+        let state = message.params.state ? message.params.state.state : message.params.state
+        if ( array.length > 1) {
+          this.history.replace(array[1], state)
+        } else {
+          this.history.replace('/', state)
+        }
+      } else {
+        console.log('Unknown command ', cmd, message.params)
+      }
     }
   }
 
