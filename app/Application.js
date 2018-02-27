@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Provider } from 'mobx-react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import createHistory from "history/createBrowserHistory"
+import { Router, Route } from 'react-router-dom'
 
 import Constants from './utils/constants'
 
@@ -10,7 +11,11 @@ import Playlist from './stores/Playlist'
 import Home from './scenes/Home'
 import Player from './scenes/Player'
 
-const site = new Site()
+const browserHistory = createHistory({
+  basename: location.pathname,
+  forceRefresh: false
+})
+const site = new Site(browserHistory)
 const playlist = new Playlist(site)
 
 let store = {
@@ -22,7 +27,7 @@ class Application extends Component {
   render () {
     return (
       <Provider {...store}>
-        <Router basename={`/${Constants.APP_ID}`}>
+        <Router history={browserHistory}>
           <div>
             <Route exact path='/' component={Home} />
             <Route path='/playlist/:hub' component={Player} />
@@ -36,12 +41,12 @@ class Application extends Component {
 }
 
 window.history.pushState = function (state, title, url) {
-  let relativeUrl = url.split(Constants.APP_ID).pop()
+  let relativeUrl = url.split(location.pathname).pop()
   store.site.pushState(state, title, relativeUrl)
 }
 
 window.history.replaceState = function (state, title, url) {
-  let relativeUrl = url.split(Constants.APP_ID).pop()
+  let relativeUrl = url.split(location.pathname).pop()
   store.site.replaceState(state, title, relativeUrl)
 }
 

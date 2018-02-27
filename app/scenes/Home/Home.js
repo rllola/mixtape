@@ -17,6 +17,7 @@ import PublicHubs from './components/PublicHubs'
 @observer
 class Home extends Component {
   render () {
+
     return (
       <div>
         <Segment
