@@ -163,6 +163,26 @@ class Playlist extends EventEmitter {
       this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
     })
   }
+
+  deleteSong (songId, hub, callback) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/data.json'
+    this.siteStore.cmd('fileGet', [innerPath, false], (res) => {
+      let data = {
+        hub: hub,
+        song: []
+      }
+
+      if (res) {
+        data = JSON.parse(res)
+      }
+
+      if (data.song[songId]) {
+        console.log(data.song[songId])
+      }
+
+      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
+    })
+  }
 }
 
 export default Playlist
