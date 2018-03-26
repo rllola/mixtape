@@ -42,6 +42,11 @@
     "ignore": [
       "/dist/",
       "/assets/"
+    ],
+    "globals": [
+      "URL",
+      "FormData",
+      "XMLHttpRequest"
     ]
   }
 }

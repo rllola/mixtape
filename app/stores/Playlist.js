@@ -1,5 +1,7 @@
 import { observable, computed, action } from 'mobx'
 import EventEmitter from 'events'
+import { fileEncode } from '../utils/encode'
+import sanitize from 'sanitize-filename'
 
 import Constants from '../utils/constants'
 
@@ -17,7 +19,7 @@ class Playlist extends EventEmitter {
       if (event.address === this.play.site) {
         // Reload list
         // TEMPORARY
-        if (event.event[1].indexOf('content.json') > -1 || event.event[1].indexOf('data.json') > -1 ) {
+        if (event.event[1].indexOf('content.json') > -1 || event.event[1].indexOf('data.json') > -1) {
           // this.siteStore.showWrapperNotification('A new song has been added. The page need to be reloaded.')
           console.log('New song added')
         } else {
@@ -73,16 +75,17 @@ class Playlist extends EventEmitter {
     let query = 'SELECT * FROM song JOIN json ON song.json_id = json.json_id WHERE json.site="' + hub + '" ORDER BY date_added DESC'
     return new Promise((resolve, reject) => {
       this.siteStore.cmdp('dbQuery', [query])
-      .then((response) => {
-        this.songs = response
-        if (!this.play) {
-          this.play = response[this.index]
-        }
-        resolve()
-      })
-      .catch(() => {
-        reject()
-      })
+        .then((response) => {
+          this.songs = response
+          if (!this.play) {
+            console.log(response[this.index])
+            this.play = response[this.index]
+          }
+          resolve()
+        })
+        .catch((err) => {
+          reject(err)
+        })
     })
   }
 
@@ -92,6 +95,73 @@ class Playlist extends EventEmitter {
 
   getHubRules (innerPath) {
     return this.siteStore.cmdp('fileRules', {'inner_path': innerPath})
+  }
+
+  editSong (songId, hub, artist, title, thumbnail, callback) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address
+
+    if (thumbnail) {
+      this.siteStore.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/' + sanitize(thumbnail.name).replace(/[^\x00-\x7F]/g, ''), thumbnail.size], (initResThumbnail) => {
+        var formdataBis = new FormData()
+        formdataBis.append(thumbnail.name, thumbnail)
+
+        console.log(initResThumbnail)
+
+        var reqbis = new XMLHttpRequest()
+        reqbis.upload.addEventListener('progress', console.log)
+        reqbis.upload.addEventListener('loadend', (res) => {
+          console.log(res)
+          this.editSongInDataJson(songId, artist, title, initResThumbnail.file_relative_path, hub, () => {
+            let innerPathContentJson = innerPath + '/content.json'
+            let innerPathDataJson = innerPath + '/data.json'
+            this.siteStore.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
+              if (res === 'ok') {
+                this.siteStore.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
+                  callback()
+                })
+              }
+            })
+          })
+        })
+        reqbis.withCredentials = true
+        reqbis.open('POST', initResThumbnail.url)
+        reqbis.send(formdataBis)
+      })
+    } else {
+      this.editSongInDataJson(songId, artist, title, null, hub, () => {
+        let innerPathContentJson = innerPath + '/content.json'
+        let innerPathDataJson = innerPath + '/data.json'
+        this.siteStore.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
+          if (res === 'ok') {
+            this.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
+              callback()
+            })
+          }
+        })
+      })
+    }
+  }
+
+  editSongInDataJson (songId, artist, title, thumbnailFileName, hub, callback) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/data.json'
+    this.siteStore.cmd('fileGet', [innerPath, false], (res) => {
+      let data = {
+        hub: hub,
+        song: []
+      }
+
+      if (res) {
+        data = JSON.parse(res)
+      }
+
+      if (data.song[songId]) {
+        data.song[songId].title = title || data.song[songId].title
+        data.song[songId].artist = artist || data.song[songId].artist
+        data.song[songId].thumbnail_file_name = thumbnailFileName || data.song[songId].thumbnail_file_name
+      }
+
+      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
+    })
   }
 }
 
