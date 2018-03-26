@@ -6,7 +6,7 @@ import EditSong from './EditSong'
 import Constants from '../../../../utils/constants'
 import { getUserAddressFromDirectory } from '../../../../utils/utils'
 
-@inject('site','playlist')
+@inject('site', 'playlist')
 class Thumbnail extends Component {
   constructor () {
     super()
@@ -29,6 +29,9 @@ class Thumbnail extends Component {
   handleDeleteClicked = (event) => {
     event.stopPropagation()
     event.preventDefault()
+    this.props.playlist.deleteSong(this.props.song.song_id, this.props.song.site, () => {
+      console.log('Done !')
+    })
   }
 
   closeEdit = (event) => {

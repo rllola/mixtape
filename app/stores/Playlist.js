@@ -78,7 +78,6 @@ class Playlist extends EventEmitter {
         .then((response) => {
           this.songs = response
           if (!this.play) {
-            console.log(response[this.index])
             this.play = response[this.index]
           }
           resolve()
@@ -133,7 +132,7 @@ class Playlist extends EventEmitter {
         let innerPathDataJson = innerPath + '/data.json'
         this.siteStore.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
           if (res === 'ok') {
-            this.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
+            this.siteStore.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
               callback()
             })
           }
@@ -154,11 +153,48 @@ class Playlist extends EventEmitter {
         data = JSON.parse(res)
       }
 
-      if (data.song[songId]) {
-        data.song[songId].title = title || data.song[songId].title
-        data.song[songId].artist = artist || data.song[songId].artist
-        data.song[songId].thumbnail_file_name = thumbnailFileName || data.song[songId].thumbnail_file_name
+      var song = data.song.find(function (song) {
+        return song.song_id === songId
+      })
+
+      var index = data.song.indexOf(song)
+
+      if (song) {
+        data.song[index].title = title || data.song[index].title
+        data.song[index].artist = artist || data.song[index].artist
+        data.song[index].thumbnail_file_name = thumbnailFileName || data.song[index].thumbnail_file_name
       }
+
+      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
+    })
+  }
+
+  // TODO: Delete song but does not remove the files from the repository.
+  deleteSong (songId, hub, callback) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/data.json'
+    this.siteStore.cmd('fileGet', [innerPath, false], (res) => {
+      let data = {
+        hub: hub,
+        song: []
+      }
+
+      if (res) {
+        data = JSON.parse(res)
+      }
+
+      var song = data.song.find(function (song) {
+        return song.song_id === songId
+      })
+
+      if (!song) {
+        console.log('NO SONG TO DELETE')
+        callback()
+        return
+      }
+
+      var index = data.song.indexOf(song)
+
+      data.song.splice(index, 1)
 
       this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
     })

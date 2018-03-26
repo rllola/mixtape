@@ -71,7 +71,7 @@ class Site extends ZeroFrame {
       if (cmd === 'wrapperPopState') {
         let array = message.params.href.split('?')
         let state = message.params.state ? message.params.state.state : message.params.state
-        if ( array.length > 1) {
+        if (array.length > 1) {
           this.history.replace(array[1], state)
         } else {
           this.history.replace('/', state)
@@ -127,10 +127,8 @@ class Site extends ZeroFrame {
         data = JSON.parse(res)
       }
 
-      console.log(thumbnailFileName)
-
       data.song.push({
-        'song_id': data.song.length,
+        'song_id': data.song[data.song.length - 1].song_id + 1,
         'title': title,
         'artist': artist,
         'file_name': fileName,
