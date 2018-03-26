@@ -89,6 +89,10 @@ class Playlist extends EventEmitter {
   fetchOptionalFileInfo (innerPath) {
     return this.siteStore.cmdp('optionalFileInfo', {'inner_path': innerPath})
   }
+
+  getHubRules (innerPath) {
+    return this.siteStore.cmdp('fileRules', {'inner_path': innerPath})
+  }
 }
 
 export default Playlist

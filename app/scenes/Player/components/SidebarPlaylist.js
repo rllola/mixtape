@@ -12,6 +12,19 @@ import SelectUser from '../../../components/SelectUser'
 @observer
 class SidebarPlaylist extends Component {
   @observable open = false
+  @observable hasPermission = false
+
+  componentDidMount () {
+    this.props.playlist.getHubRules('merged-Mixtape/' + this.props.hub.address + '/data/users/' + this.props.site.authAddress + '/content.json')
+      .then((res) => {
+        if (res.max_size !== undefined) {
+          this.hasPermission = true
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   show () {
     this.open = true
@@ -33,7 +46,7 @@ class SidebarPlaylist extends Component {
           <p>{ description }</p>
           <br />
           <br />
-          <Button onClick={this.show.bind(this)} fluid inverted basic>Add</Button>
+          { this.hasPermission ? <Button onClick={this.show.bind(this)} fluid inverted basic>Add</Button> : null}
         </Segment>
 
         {/* Modal for uploading song */}
