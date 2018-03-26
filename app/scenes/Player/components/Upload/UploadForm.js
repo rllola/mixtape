@@ -77,42 +77,42 @@ class UploadForm extends Component {
 
     return (
       isUploading
-      ? <Loader size='massive'>Uploading file...</Loader>
-      : <Modal.Content>
-        {this.state.error ? <Message content={this.state.error} negative /> : null}
-        <Grid>
-          <Grid.Row>
-            <Grid.Column width={5}>
-              {/* Select thumbnail */}
-              <Dimmer.Dimmable
-                dimmed={active}
-                style={{ width: '240px', height: '196px' }}
-                onMouseLeave={this.handleHide}
-                onMouseEnter={this.handleShow} >
-
-                <Dimmer active={active} content={content} />
-                <Image
-                  id='thumbnail'
+        ? <Loader size='massive'>Uploading file...</Loader>
+        : <Modal.Content>
+          {this.state.error ? <Message content={this.state.error} negative /> : null}
+          <Grid>
+            <Grid.Row>
+              <Grid.Column width={5}>
+                {/* Select thumbnail */}
+                <Dimmer.Dimmable
+                  dimmed={active}
                   style={{ width: '240px', height: '196px' }}
-                  src={this.state.srcThumbnail || 'assets/img/thumbnail.png'} />
+                  onMouseLeave={this.handleHide}
+                  onMouseEnter={this.handleShow} >
 
-              </Dimmer.Dimmable>
-              <small>Click to select a thumbnail for your song (240x196).</small>
-            </Grid.Column>
-            <Grid.Column width={11}>
-              <Form id='uploadForm' onSubmit={this.handleSubmit}>
-                <Form.Field>
-                  <input id='fileSelector' type='file' accept='.jpg,.png' style={{ display: 'none' }} value={this.state.thumbnail} onChange={this.handleThumbnailChange} />
-                  <Form.Input label='Artist' type='text' value={this.state.artist} onChange={this.handleArtistChange} />
-                  <Form.Input label='Title' type='text' value={this.state.title} onChange={this.handleTitleChange} />
-                  <input label='File' type='file' accept='audio/*' onChange={this.handleFileChange} />
-                </Form.Field>
-                <Form.Button>Submit</Form.Button>
-              </Form>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Modal.Content>
+                  <Dimmer active={active} content={content} />
+                  <Image
+                    id='thumbnail'
+                    style={{ width: '240px', height: '196px' }}
+                    src={this.state.srcThumbnail || 'assets/img/thumbnail.png'} />
+
+                </Dimmer.Dimmable>
+                <small>Click to select a thumbnail for your song (240x196).</small>
+              </Grid.Column>
+              <Grid.Column width={11}>
+                <Form id='uploadForm' onSubmit={this.handleSubmit}>
+                  <Form.Field>
+                    <input id='fileSelector' type='file' accept='.jpg,.png' style={{ display: 'none' }} value={this.state.thumbnail} onChange={this.handleThumbnailChange} />
+                    <Form.Input label='Artist' type='text' value={this.state.artist} onChange={this.handleArtistChange} />
+                    <Form.Input label='Title' type='text' value={this.state.title} onChange={this.handleTitleChange} />
+                    <input label='File' type='file' accept='audio/*' onChange={this.handleFileChange} />
+                  </Form.Field>
+                  <Form.Button>Submit</Form.Button>
+                </Form>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Modal.Content>
     )
   }
 }

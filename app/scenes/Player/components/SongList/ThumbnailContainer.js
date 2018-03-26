@@ -14,9 +14,9 @@ class ThumbnailContainer extends Component {
   }
 
   componentDidMount () {
-    this.props.playlist.fetchOptionalFileInfo('merged-Mixtape/' + this.props.song.site + '/' + this.props.song.directory  + '/' + this.props.song.file_name)
+    this.props.playlist.fetchOptionalFileInfo('merged-Mixtape/' + this.props.song.site + '/' + this.props.song.directory + '/' + this.props.song.file_name)
       .then((res) => {
-        this.setState({fileInfo : res})
+        this.setState({fileInfo: res})
       })
       .catch((err) => {
         console.log(err)
@@ -26,8 +26,8 @@ class ThumbnailContainer extends Component {
   render () {
     return (
       this.state.fileInfo
-      ? <Thumbnail song={this.props.song} fileInfo={this.state.fileInfo} index={this.props.index} />
-      : null )
+        ? <Thumbnail song={this.props.song} fileInfo={this.state.fileInfo} index={this.props.index} />
+        : null)
   }
 }
 
