@@ -16,13 +16,13 @@ class PublicHubs extends Component {
                 <Card
                   key={value.hub_address}
                   link
-                  href={'http://127.0.0.1:43110/' + value.hub_address}
+                  href={'/' + value.hub_address}
                   header={value.title}
                   meta={value.creator}
                   description={value.description} />
               )
             })
-          }
+            }
           </Card.Group>
         </Grid.Row>
         <Grid.Row centered>

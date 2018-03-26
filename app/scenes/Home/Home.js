@@ -17,7 +17,6 @@ import PublicHubs from './components/PublicHubs'
 @observer
 class Home extends Component {
   render () {
-
     return (
       <div>
         <Segment
@@ -79,7 +78,7 @@ class Home extends Component {
                 </p>
               </Grid.Column>
               <Grid.Column width={10}>
-                <Image src='assets/img/Mixtape.png' fluid/>
+                <Image src='assets/img/Mixtape.png' fluid />
               </Grid.Column>
             </Grid>
           </Container>
@@ -87,17 +86,17 @@ class Home extends Component {
 
         <Segment inverted vertical style={{ padding: '5em 0em' }}>
           <Container>
-          <Grid style={{ textAlign: 'center' }}>
-          <Grid.Column width={8}>
-            <Header as='h3' inverted>Donation</Header>
-            <p>Bitcoin : 1BzrPMr7qrca2wMV4a1qeH4CmJEKtAbrKW</p>
-            <p>Dogecoin : DR252U5g3DECTpXsx8t4PBaePgepD1oADw</p>
-          </Grid.Column>
-          <Grid.Column width={8}>
-            <p>Made with love by <a href='http://127.0.0.1:43110/Me.ZeroNetwork.bit/?Profile/1BLueGvui1GdbtsjcKqCf4F67uKfritG49/1KuwwnkAtVrfnyhv8pyGRxLqzNZbEkJt2u/lola@zeroid.bit'>Lola</a>.</p>
-            <p>Like this project ? Check also <a href='http://127.0.0.1:43110/ZeroLSTN.bit/'>ZeroSTLN</a>.</p>
-          </Grid.Column>
-          </Grid>
+            <Grid style={{textAlign: 'center'}}>
+              <Grid.Column width={8}>
+                <Header as='h3' inverted>Donation</Header>
+                <p>Bitcoin : 1BzrPMr7qrca2wMV4a1qeH4CmJEKtAbrKW</p>
+                <p>Dogecoin : DR252U5g3DECTpXsx8t4PBaePgepD1oADw</p>
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <p>Made with love by <a href='/Me.ZeroNetwork.bit/?Profile/1BLueGvui1GdbtsjcKqCf4F67uKfritG49/1KuwwnkAtVrfnyhv8pyGRxLqzNZbEkJt2u/lola@zeroid.bit'>Lola</a>.</p>
+                <p>Like this project ? Check also <a href='/ZeroLSTN.bit/'>ZeroSTLN</a>.</p>
+              </Grid.Column>
+            </Grid>
           </Container>
         </Segment>
       </div>
