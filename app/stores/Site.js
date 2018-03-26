@@ -39,6 +39,11 @@ class Site extends ZeroFrame {
     return this.siteInfo.cert_user_id
   }
 
+  @computed
+  get authAddress () {
+    return this.siteInfo.auth_address
+  }
+
   @action.bound
   setServerInfo (info) {
     this.serverInfo = info
