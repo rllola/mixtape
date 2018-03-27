@@ -1,8 +1,14 @@
 [
   {
     "hub_address": "1FEyUA9W4jfSZRREgqHEUstQGhUeaNcRWG",
-    "title": "Mixtape",
-    "description": "Mixtape's principal hub.",
+    "title": "Mixtape Private",
+    "description": "Mixtape's private hub.",
+    "creator": "Lola"
+  },
+  {
+    "hub_address": "17rzU1715PbkyFjumb6SaH69cf1dgZqxxh",
+    "title": "Mixtape Public",
+    "description": "Mixtape's public hub.",
     "creator": "Lola"
   }
 ]
