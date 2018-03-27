@@ -116,7 +116,13 @@ class Playlist extends EventEmitter {
             this.siteStore.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
               if (res === 'ok') {
                 this.siteStore.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
-                  callback()
+                  this.fetchSongsByHub(this.play.site)
+                    .then(() => {
+                      callback()
+                    })
+                    .catch((error) => {
+                      console.log(error)
+                    })
                 })
               }
             })
@@ -133,7 +139,13 @@ class Playlist extends EventEmitter {
         this.siteStore.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
           if (res === 'ok') {
             this.siteStore.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
-              callback()
+              this.fetchSongsByHub(this.play.site)
+                .then(() => {
+                  callback()
+                })
+                .catch((error) => {
+                  console.log(error)
+                })
             })
           }
         })
@@ -196,7 +208,15 @@ class Playlist extends EventEmitter {
 
       data.song.splice(index, 1)
 
-      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
+      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], () => {
+        this.fetchSongsByHub(this.play.site)
+          .then(() => {
+            callback()
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      })
     })
   }
 }
