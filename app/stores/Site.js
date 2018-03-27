@@ -127,8 +127,14 @@ class Site extends ZeroFrame {
         data = JSON.parse(res)
       }
 
+      var songId = 0
+
+      if (data.song.length > 0) {
+        songId = data.song[data.song.length - 1].song_id + 1
+      }
+
       data.song.push({
-        'song_id': data.song[data.song.length - 1].song_id + 1,
+        'song_id': songId,
         'title': title,
         'artist': artist,
         'file_name': fileName,
