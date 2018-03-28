@@ -12,18 +12,19 @@ import SelectUser from '../../../components/SelectUser'
 @observer
 class SidebarPlaylist extends Component {
   @observable open = false
-  @observable hasPermission = false
+  @observable hasPermission = true
 
   componentDidMount () {
-    this.props.playlist.getHubRules('merged-Mixtape/' + this.props.hub.address + '/data/users/' + this.props.site.authAddress + '/content.json')
+    /*this.props.playlist.getHubRules('merged-Mixtape/' + this.props.hub.address + '/data/users/' + this.props.site.authAddress + '/content.json')
       .then((res) => {
+        console.log(res)
         if (res.max_size !== undefined) {
           this.hasPermission = true
         }
       })
       .catch((err) => {
         console.log(err)
-      })
+      })*/
   }
 
   show () {

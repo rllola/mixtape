@@ -24,7 +24,9 @@ class Player extends Component {
     // Need to be done before loading component
     this.props.playlist.fetchSongsByHub(this.hub)
       .then(() => {
-        this.player.src = this.props.playlist.src
+        if (this.props.playlist.src) {
+          this.player.src = this.props.playlist.src
+        }
       })
   }
 
