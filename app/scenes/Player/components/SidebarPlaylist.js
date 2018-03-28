@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Segment, Header, Modal, Button, Image } from 'semantic-ui-react'
+import { Segment, Header, Modal, Button } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
-import { Link } from 'react-router-dom'
 
 import Upload from './Upload/'
 import SongList from './SongList/'
@@ -15,10 +14,31 @@ class SidebarPlaylist extends Component {
   @observable hasPermission = false
 
   componentDidMount () {
-    this.props.playlist.getHubRules('merged-Mixtape/' + this.props.hub.address + '/data/users/' + this.props.site.authAddress + '/content.json')
+    this.props.playlist.getHubRules(this.props.hub.address)
       .then((res) => {
-        if (res.max_size !== undefined) {
-          this.hasPermission = true
+        let response = JSON.parse(res)
+        let permissions = Object.entries(response.user_contents.permissions)
+
+        console.log(this.props.site.siteInfo.cert_user_id)
+
+        // Check direct permission
+        permissions.forEach((element) => {
+          if (this.props.site.siteInfo.cert_user_id === element[0]) {
+            this.hasPermission = true
+          }
+        })
+
+        console.log(this.hasPermission)
+
+        // Check permissions_rules
+        if (!this.hasPermission) {
+          let permissionRules = Object.entries(response.user_contents.permission_rules)
+          permissionRules.forEach((element) => {
+            let certProvider = this.props.site.siteInfo.cert_user_id.split('@')[1]
+            if (element[0].indexOf(certProvider) > 0 || element[0] === '.*') {
+              this.hasPermission = true
+            }
+          })
         }
       })
       .catch((err) => {

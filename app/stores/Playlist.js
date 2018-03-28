@@ -77,7 +77,7 @@ class Playlist extends EventEmitter {
       this.siteStore.cmdp('dbQuery', [query])
         .then((response) => {
           this.songs = response
-          if (!this.play) {
+          if (!this.play && this.songs.length > 0) {
             this.play = response[this.index]
           }
           resolve()
@@ -92,8 +92,9 @@ class Playlist extends EventEmitter {
     return this.siteStore.cmdp('optionalFileInfo', {'inner_path': innerPath})
   }
 
-  getHubRules (innerPath) {
-    return this.siteStore.cmdp('fileRules', {'inner_path': innerPath})
+  getHubRules (hub) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/content.json'
+    return this.siteStore.cmdp('fileGet', [innerPath, false])
   }
 
   editSong (songId, hub, artist, title, thumbnail, callback) {
