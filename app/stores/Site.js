@@ -130,6 +130,7 @@ class Site extends ZeroFrame {
       var songId = 0
 
       if (data.song.length > 0) {
+        console.log(data.song)
         songId = data.song[data.song.length - 1].song_id + 1
       }
 
@@ -154,8 +155,6 @@ class Site extends ZeroFrame {
         var formdata = new FormData()
         formdata.append(file.name, file)
 
-        console.log(initResSong)
-
         var req = new XMLHttpRequest()
         req.upload.addEventListener('progress', console.log)
         req.upload.addEventListener('loadend', (res) => {
@@ -165,13 +164,10 @@ class Site extends ZeroFrame {
             var formdataBis = new FormData()
             formdataBis.append(thumbnail.name, thumbnail)
 
-            console.log(initResThumbnail)
-
             var reqbis = new XMLHttpRequest()
             reqbis.upload.addEventListener('progress', console.log)
             reqbis.upload.addEventListener('loadend', (res) => {
-              console.log(res)
-              this.registerSongInDataJson(artist, title, initResSong.file_relative_path, initResThumbnail.file_relative_path, hub, () => {
+              this.registerSongInDataJson(artist, title, initResSong.file_relative_path, initResThumbnail.file_relative_path, hub, (res) => {
                 let innerPathContentJson = innerPath + '/content.json'
                 let innerPathDataJson = innerPath + '/data.json'
                 this.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
