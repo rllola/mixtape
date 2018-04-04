@@ -10,11 +10,11 @@ wget https://github.com/HelloZeroNet/ZeroNet/archive/master.tar.gz
 tar xvpfz master.tar.gz
 
 echo "==== COPY FILES ===="
-#mkdir ZeroNet-master/data
-#mkdir ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
-cd ZeroNet-master/
-python zeronet.py siteDownload 1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
-cd ../
+mkdir ZeroNet-master/data
+mkdir ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
+#cd ZeroNet-master/
+#python zeronet.py siteDownload 1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
+#cd ../
 mv mixtape/* mixtape/.babelrc ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
 
 echo "==== BUILD DIST ===="
