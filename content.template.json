@@ -4,7 +4,7 @@
  "background-color": "#FFF",
  "description": "Share your playlist",
  "files": {},
- "ignore": "(data/.*|scripts|.git|node_modules|app|package.json|README.md|NOTES.md|TODO.md|webpack.*|package-lock.json|merged-Mixtape/Mixtape.db)",
+ "ignore": "(data/.*|scripts|generate.js|content.template.json|.git|node_modules|app|package.json|README.md|NOTES.md|TODO.md|webpack.*|package-lock.json|merged-Mixtape/Mixtape.db)",
  "inner_path": "content.json",
  "modified": 1518995744,
  "postmessage_nonce_security": true,
