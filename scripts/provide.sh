@@ -13,6 +13,8 @@ echo "==== COPY FILES ===="
 #mkdir ZeroNet-master/data
 #mkdir ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
 cd ZeroNet-master/
+# We need to run zeronet once before
+timeout 45 python zeronet.py
 python zeronet.py siteDownload 1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP
 cd ../
 #mv mixtape/* mixtape/.babelrc ZeroNet-master/data/1MzSDy3x8cFrt3P2YkXNN7ogYDFfKX6hnP/
