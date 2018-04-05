@@ -18,4 +18,6 @@ deploy:
     script: bash scripts/deploy.sh
     skip: true
     on:
-      branch: development
+      branch:
+        - development
+        - travis-deploy
