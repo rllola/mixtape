@@ -19,16 +19,12 @@ class SidebarPlaylist extends Component {
         let response = JSON.parse(res)
         let permissions = Object.entries(response.user_contents.permissions)
 
-        console.log(this.props.site.siteInfo.cert_user_id)
-
         // Check direct permission
         permissions.forEach((element) => {
           if (this.props.site.siteInfo.cert_user_id === element[0]) {
             this.hasPermission = true
           }
         })
-
-        console.log(this.hasPermission)
 
         // Check permissions_rules
         if (!this.hasPermission) {
@@ -73,7 +69,7 @@ class SidebarPlaylist extends Component {
         <Modal dimmer='blurring' open={this.open} onClose={this.close.bind(this)}>
           <Modal.Header>Upload Form</Modal.Header>
           {this.props.site.isConnected
-            ? <Upload playlist={this.props.hub.address} postUploadAction={() => { this.props.playlist.fetchSongsByHub(this.props.hub.address) }} />
+            ? <Upload playlist={this.props.hub.address} />
             : <Modal.Content textAlign='center'><SelectUser /></Modal.Content>}
           <Modal.Actions>
             <Button color='black' onClick={this.close.bind(this)}>
