@@ -3,6 +3,10 @@ sudo: required
 node_js:
   - "7"
 
+branches:
+  only:
+    - development
+
 install:
   - npm install
 
@@ -20,4 +24,3 @@ deploy:
     on:
       branch:
         - development
-        - travis-deploy
