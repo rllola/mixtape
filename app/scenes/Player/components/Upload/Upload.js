@@ -14,14 +14,13 @@ class Upload extends Component {
 
   handlePostUpload () {
     this.setState({uploaded: true})
-    this.props.postUploadAction()
   }
 
   render () {
     return (
       this.state.uploaded
-      ? <Modal.Content><h1>Thank you for uploading</h1></Modal.Content>
-      : <UploadForm playlist={this.props.playlist} postUploadAction={this.handlePostUpload.bind(this)} />
+        ? <Modal.Content><h1>Thank you for uploading</h1></Modal.Content>
+        : <UploadForm hub={this.props.playlist} postUploadAction={this.handlePostUpload.bind(this)} />
     )
   }
 }

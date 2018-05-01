@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react'
 import { inject } from 'mobx-react'
 
-@inject('site')
+@inject('playlist')
 class UploadForm extends Component {
   constructor (props) {
     super(props)
@@ -57,7 +57,7 @@ class UploadForm extends Component {
   handleSubmit (event) {
     event.preventDefault()
     this.setState({isUploading: true})
-    this.props.site.registerSong(this.props.playlist, this.state.artist, this.state.title, this.state.file, this.state.thumbnailFile, () => {
+    this.props.playlist.registerSong(this.props.hub, this.state.artist, this.state.title, this.state.file, this.state.thumbnailFile, () => {
       this.props.postUploadAction()
     })
     this.setState({ title: '' })

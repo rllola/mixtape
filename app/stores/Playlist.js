@@ -77,6 +77,7 @@ class Playlist extends EventEmitter {
       this.siteStore.cmdp('dbQuery', [query])
         .then((response) => {
           this.songs = response
+          console.log(response)
           if (!this.play && this.songs.length > 0) {
             this.play = response[this.index]
           }
@@ -220,6 +221,105 @@ class Playlist extends EventEmitter {
       })
     })
   }
+
+  checkContentJson (innerPath, callback) {
+    this.siteStore.cmd('fileGet', [innerPath, false], (res) => {
+      let data = {}
+
+      if (res) {
+        data = JSON.parse(res)
+      }
+
+      if (data.optional === '(?!data.json)') {
+        return callback()
+      }
+      data.optional = '(?!data.json)'
+
+      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
+    })
+  }
+
+  registerSongInDataJson (artist, title, fileName, thumbnailFileName, hub, callback) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/data.json'
+    this.siteStore.cmd('fileGet', [innerPath, false], (res) => {
+      let data = {
+        hub: hub,
+        song: []
+      }
+
+      if (res) {
+        data = JSON.parse(res)
+      }
+
+      var songId = 0
+
+      if (data.song.length > 0) {
+        console.log(data.song)
+        songId = data.song[data.song.length - 1].song_id + 1
+      }
+
+      data.song.push({
+        'song_id': songId,
+        'title': title,
+        'artist': artist,
+        'file_name': fileName,
+        'thumbnail_file_name': thumbnailFileName,
+        'date_added': new Date()
+      })
+
+      this.siteStore.cmd('fileWrite', [innerPath, fileEncode(data)], callback)
+    })
+  }
+
+  registerSong (hub, artist, title, file, thumbnail, callback) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address
+
+    this.checkContentJson(innerPath + '/content.json', (res) => {
+      this.siteStore.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/' + sanitize(file.name).replace(/[^\x00-\x7F]/g, '').replace('&', ''), file.size], (initResSong) => {
+        var formdata = new FormData()
+        formdata.append(file.name, file)
+
+        var req = new XMLHttpRequest()
+        req.upload.addEventListener('progress', console.log)
+        req.upload.addEventListener('loadend', (res) => {
+          this.siteStore.cmd('bigfileUploadInit', ['merged-Mixtape/' + hub + '/data/users/' + this.siteStore.siteInfo.auth_address + '/' + sanitize(thumbnail.name).replace(/[^\x00-\x7F]/g, ''), thumbnail.size], (initResThumbnail) => {
+            var formdataBis = new FormData()
+            formdataBis.append(thumbnail.name, thumbnail)
+
+            var reqbis = new XMLHttpRequest()
+            reqbis.upload.addEventListener('progress', console.log)
+            reqbis.upload.addEventListener('loadend', (res) => {
+              this.registerSongInDataJson(artist, title, initResSong.file_relative_path, initResThumbnail.file_relative_path, hub, (res) => {
+                let innerPathContentJson = innerPath + '/content.json'
+                let innerPathDataJson = innerPath + '/data.json'
+                this.siteStore.cmd('siteSign', {inner_path: innerPathDataJson}, (res) => {
+                  if (res === 'ok') {
+                    this.siteStore.cmd('sitePublish', {inner_path: innerPathContentJson}, (res) => {
+                      this.fetchSongsByHub(this.play.site)
+                        .then(() => {
+                          console.log('We have a new song !')
+                          callback()
+                        })
+                        .catch((error) => {
+                          console.log(error)
+                        })
+                    })
+                  }
+                })
+              })
+            })
+            reqbis.withCredentials = true
+            reqbis.open('POST', initResThumbnail.url)
+            reqbis.send(formdataBis)
+          })
+        })
+        req.withCredentials = true
+        req.open('POST', initResSong.url)
+        req.send(formdata)
+      })
+    })
+  }
+
 }
 
 export default Playlist

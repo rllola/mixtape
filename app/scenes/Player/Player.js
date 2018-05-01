@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Sidebar, Grid } from 'semantic-ui-react'
+import { Sidebar, Grid, Loader } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
 import { Link } from 'react-router-dom'
@@ -10,16 +10,13 @@ import SidebarPlaylist from './components/SidebarPlaylist'
 @observer
 class Player extends Component {
   @observable visible = true
+  @observable fetching = true
 
   componentDidMount () {
     this.hub = this.props.match.params.hub
     this.player = document.getElementById('audioPlayer')
 
-    this.props.playlist.on('songChanged', () => {
-      this.player.src = this.props.playlist.src
-      this.player.load()
-      this.player.play()
-    })
+    this.props.playlist.on('songChanged', this._loadAndPlay)
 
     // Need to be done before loading component
     this.props.playlist.fetchSongsByHub(this.hub)
@@ -27,16 +24,26 @@ class Player extends Component {
         if (this.props.playlist.src) {
           this.player.src = this.props.playlist.src
         }
+        this.fetching = false
       })
+  }
+
+  componentWillUnmount () {
+    this.props.playlist.removeListener('songChanged', this._loadAndPlay)
+    this.player = null
   }
 
   onEnded (event) {
     this.props.playlist.playNextSong()
     if (this.props.playlist.index) {
-      this.player.src = this.props.playlist.src
-      this.player.load()
-      this.player.play()
+      this._loadAndPlay()
     }
+  }
+
+  _loadAndPlay = () => {
+    this.player.src = this.props.playlist.src
+    this.player.load()
+    this.player.play()
   }
 
   handleToggleClick () {
@@ -59,9 +66,9 @@ class Player extends Component {
       <Sidebar.Pushable style={{ height: '100vh' }}>
         <Sidebar animation='uncover' width='wide' visible={this.visible} style={{ backgroundColor: '#1b1c1d', overflowX: 'hidden' }}>
 
-          <SidebarPlaylist hub={this.props.location.state.hub} />
+          {this.fetching ? <Loader /> : <SidebarPlaylist hub={this.props.location.state.hub} />}
 
-          <div style={{  textAlign: 'center', marginTop: '15px' }}>
+          <div style={{ textAlign: 'center', marginTop: '15px' }}>
             <Link to='/' style={{ color: 'white' }}>
               <strong>Back</strong>
             </Link>
