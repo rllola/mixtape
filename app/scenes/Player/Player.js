@@ -16,9 +16,7 @@ class Player extends Component {
     this.hub = this.props.match.params.hub
     this.player = document.getElementById('audioPlayer')
 
-    this.props.playlist.on('songChanged', () => {
-      this._loadAndPlay()
-    })
+    this.props.playlist.on('songChanged', this._loadAndPlay)
 
     // Need to be done before loading component
     this.props.playlist.fetchSongsByHub(this.hub)
@@ -30,6 +28,11 @@ class Player extends Component {
       })
   }
 
+  componentWillUnmount () {
+    this.props.playlist.removeListener('songChanged', this._loadAndPlay)
+    this.player = null
+  }
+
   onEnded (event) {
     this.props.playlist.playNextSong()
     if (this.props.playlist.index) {
@@ -37,7 +40,7 @@ class Player extends Component {
     }
   }
 
-  _loadAndPlay () {
+  _loadAndPlay = () => {
     this.player.src = this.props.playlist.src
     this.player.load()
     this.player.play()
