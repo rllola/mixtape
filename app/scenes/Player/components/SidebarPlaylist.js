@@ -5,6 +5,7 @@ import { observable } from 'mobx'
 
 import Upload from './Upload/'
 import SongList from './SongList/'
+import SupportOptionalFileButton from './SupportOptionalFileButton'
 import SelectUser from '../../../components/SelectUser'
 
 @inject('site', 'playlist')
@@ -57,7 +58,10 @@ class SidebarPlaylist extends Component {
       <div>
         {/* Sidebar header */}
         <Segment inverted basic>
-          <Header as='h1'>{ title }</Header>
+          <Header as='h1'>
+            { title }
+            <SupportOptionalFileButton hub={this.props.hub.address} title={title} style={{ paddingLeft: '90px' }} />
+          </Header>
           <br />
           <p>{ description }</p>
           <br />

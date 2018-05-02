@@ -93,6 +93,20 @@ class Playlist extends EventEmitter {
     return this.siteStore.cmdp('optionalFileInfo', {'inner_path': innerPath})
   }
 
+  fetchOptionalHelpList (hub) {
+    return this.siteStore.cmdp('optionalHelpList', {address: hub})
+  }
+
+  supportHub (hub, title) {
+    let directory = 'merged-Mixtape/' + hub + '/data/users/'
+    return this.siteStore.cmdp('optionalHelp', {address: hub, directory, title})
+  }
+
+  unsupportHub (hub) {
+    let directory = 'merged-Mixtape/' + hub + '/data/users/'
+    return this.siteStore.cmdp('optionalHelpRemove', {address: hub, directory})
+  }
+
   getHubRules (hub) {
     let innerPath = 'merged-Mixtape/' + hub + '/data/users/content.json'
     return this.siteStore.cmdp('fileGet', [innerPath, false])
