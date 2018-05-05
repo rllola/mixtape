@@ -7,6 +7,7 @@ import Upload from './Upload/'
 import SongList from './SongList/'
 import SupportOptionalFileButton from './SupportOptionalFileButton'
 import SelectUser from '../../../components/SelectUser'
+import FollowFeed from './FollowFeed/'
 
 @inject('site', 'playlist')
 @observer
@@ -60,7 +61,8 @@ class SidebarPlaylist extends Component {
         <Segment inverted basic>
           <Header as='h1'>
             { title }
-            <SupportOptionalFileButton hub={this.props.hub.address} title={title} style={{ paddingLeft: '90px' }} />
+            <FollowFeed style={{marginLeft: '10px', verticalAlign: '20%'}} />
+            <SupportOptionalFileButton hub={this.props.hub.address} title={title} style={{ marginLeft: '75px' }} />
           </Header>
           <br />
           <p>{ description }</p>

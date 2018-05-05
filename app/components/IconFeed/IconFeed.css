@@ -1,0 +1,45 @@
+.icon-feed {
+	width: 3px;
+	height: 3px;
+	display: inline-block;
+	border-radius: 10px;
+	background-color: #666;
+	position: relative;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-left: 5px;
+	transition: all 0.3s
+}
+.icon-feed:after {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-top: 2px solid #666;
+	border-right: 2px solid #666;
+	border-radius: 0px 6px 0px 0px;
+	display: block;
+	border-right: 2px solid #666;
+	bottom: 0px;
+	position: absolute;
+	transition: all 0.3s
+}
+.icon-feed:before {
+	content: "";
+	width: 11px;
+	height: 11px;
+	border-top: 2px solid #666;
+	border-right: 2px solid #666;
+	border-radius: 0px 10px 0px 0px;
+	display: block;
+	bottom: 0px;
+	position: absolute;
+	transition: all 0.3s
+}
+
+.following {
+	background-color: aliceblue;
+}
+
+.following::after, .following::before {
+	border-color: aliceblue;
+}
