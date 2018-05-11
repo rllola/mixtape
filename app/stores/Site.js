@@ -113,6 +113,27 @@ class Site extends ZeroFrame {
   showWrapperNotification (message) {
     this.cmd('wrapperNotification', ['info', message, 10000])
   }
+
+  followFeed () {
+    let query = "SELECT song_id AS event_uri, 'post' AS type, CAST(round((julianday(date_added)- 2440587.5)*86400.0) AS integer) AS date_added, artist || ' - ' || title AS title, 'New song added !' AS body, '?' AS url FROM song"
+    let params = ['']
+    return this.cmdp('feedFollow', [{'Posts': [query, params]}])
+  }
+
+  unfollowFeed () {
+    return this.cmdp('feedFollow', [{}])
+  }
+
+  feedListFollow () {
+    return this.cmdp('feedListFollow')
+  }
 }
+
+1511698618.0
+1525782905
+
+1526042359.0
+1511698618.0
+1526042455
 
 export default Site

@@ -1,12 +1,36 @@
 import React, { Component } from 'react'
 import { Popup } from 'semantic-ui-react'
 import IconFeed from '../../../../components/IconFeed/'
+import { inject, observer } from 'mobx-react'
 
+@inject('site')
+@observer
 class FollowFeed extends Component {
   state = {following: false}
 
+  componentDidMount () {
+    this.props.site.feedListFollow()
+      .then((res) => {
+        console.log(res)
+        if (res.Posts) {
+          this.setState({following: true})
+        }
+      })
+  }
+
   handleClik = (event) => {
-    this.setState({following: !this.state.following})
+    if (!this.state.following) {
+      this.props.site.followFeed()
+        .then(() => {
+          this.setState({following: true})
+        })
+    } else {
+      this.props.site.unfollowFeed()
+        .then((res) => {
+          console.log(res)
+          this.setState({following: false})
+        })
+    }
   }
 
   render () {
