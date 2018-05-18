@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action, computed, toJS } from 'mobx'
 import { fileEncode } from '../utils/encode'
 import EventEmitter from 'events'
 import ZeroFrame from 'zeroframe'
@@ -8,6 +8,7 @@ class Site extends ZeroFrame {
   @observable serverInfo
   @observable siteInfo
   @observable hubs = []
+  @observable feeds = []
 
   constructor (history) {
     super()
@@ -57,6 +58,11 @@ class Site extends ZeroFrame {
   @action.bound
   setHubs (hubs) {
     this.hubs = hubs
+  }
+
+  @action.bound
+  setFeeds (feeds) {
+    this.feeds = feeds
   }
 
   onRequest (cmd, message) {
@@ -112,6 +118,45 @@ class Site extends ZeroFrame {
 
   showWrapperNotification (message) {
     this.cmd('wrapperNotification', ['info', message, 10000])
+  }
+
+  followFeed (hub) {
+    let query = "SELECT song_id AS event_uri, \
+      'post' AS type, \
+      CAST(round((julianday(date_added)- 2440587.5)*86400.0) AS integer) AS date_added, \
+      artist || ' - ' || title AS title, \
+      'New song added !' AS body, \
+      '?' AS url \
+      FROM song JOIN json ON song.json_id = json.json_id WHERE json.site='" + hub + "'"
+    let params = ['']
+
+    let newFeeds = {
+      ... toJS(this.feeds),
+      [hub]: [query, params]
+    }
+
+    return this.cmdp('feedFollow', [newFeeds])
+      .then(() => {
+        this.setFeeds(newFeeds)
+      })
+  }
+
+  unfollowFeed (hub) {
+    let newFeeds = toJS(this.feeds)
+
+    delete newFeeds[hub]
+
+    return this.cmdp('feedFollow', [newFeeds])
+      .then(() => {
+        this.setFeeds(newFeeds)
+      })
+  }
+
+  feedListFollow () {
+    return this.cmdp('feedListFollow')
+      .then((res) => {
+        this.setFeeds(res)
+      })
   }
 }
 

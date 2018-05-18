@@ -56,7 +56,7 @@ class SupportOptionalFileButton extends Component {
         trigger={<Checkbox toggle style={this.props.style} checked={this.state.checked} onChange={this.onChange} />}
         content='Support this playlist by automatically downloading every songs.'
         on='hover'
-        position='right' />
+        position='bottom right' />
     )
   }
 }
