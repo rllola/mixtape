@@ -61,7 +61,7 @@ class SidebarPlaylist extends Component {
         <Segment inverted basic>
           <Header as='h1'>
             { title }
-            <FollowFeed style={{marginLeft: '10px', verticalAlign: '20%'}} />
+            <FollowFeed hub={this.props.hub.address} style={{marginLeft: '10px', verticalAlign: '20%'}} />
             <SupportOptionalFileButton hub={this.props.hub.address} title={title} style={{ marginLeft: '75px' }} />
           </Header>
           <br />

@@ -6,30 +6,16 @@ import { inject, observer } from 'mobx-react'
 @inject('site')
 @observer
 class FollowFeed extends Component {
-  state = {following: false}
-
   componentDidMount () {
+    // Need to load this when we enter the site
     this.props.site.feedListFollow()
-      .then((res) => {
-        console.log(res)
-        if (res.Posts) {
-          this.setState({following: true})
-        }
-      })
   }
 
   handleClik = (event) => {
-    if (!this.state.following) {
-      this.props.site.followFeed()
-        .then(() => {
-          this.setState({following: true})
-        })
+    if (!this.props.site.feeds[this.props.hub]) {
+      this.props.site.followFeed(this.props.hub)
     } else {
-      this.props.site.unfollowFeed()
-        .then((res) => {
-          console.log(res)
-          this.setState({following: false})
-        })
+      this.props.site.unfollowFeed(this.props.hub)
     }
   }
 
@@ -40,7 +26,7 @@ class FollowFeed extends Component {
       <Popup
         trigger={
           <span onClick={this.handleClik} style={{cursor: 'pointer'}}>
-            <IconFeed style={style} following={this.state.following} />
+            <IconFeed style={style} following={this.props.site.feeds[this.props.hub]} />
           </span>
         }
         content='Add to your newsfeed'
