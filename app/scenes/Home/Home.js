@@ -88,13 +88,14 @@ class Home extends Component {
           <Container>
             <Grid style={{textAlign: 'center'}}>
               <Grid.Column width={8}>
-                <Header as='h3' inverted>Donation</Header>
-                <p>Bitcoin : 1BzrPMr7qrca2wMV4a1qeH4CmJEKtAbrKW</p>
-                <p>Dogecoin : DR252U5g3DECTpXsx8t4PBaePgepD1oADw</p>
+                <Header as='h3' inverted>Ressources</Header>
+                <a href='/1EMcXwk7qQdY3pbj86A98gZHjDBNRrscdL/?Post:59:Creating+your+Mixtape+on+ZeroNet+(Spotify+alternative)'>Creating your Mixtape on ZeroNet (Spotify alternative)</a>
+                {/*<p>Bitcoin : 1BzrPMr7qrca2wMV4a1qeH4CmJEKtAbrKW</p>
+                <p>Dogecoin : DR252U5g3DECTpXsx8t4PBaePgepD1oADw</p> */}
               </Grid.Column>
               <Grid.Column width={8}>
-                <p>Made with love by <a href='/Me.ZeroNetwork.bit/?Profile/1BLueGvui1GdbtsjcKqCf4F67uKfritG49/1KuwwnkAtVrfnyhv8pyGRxLqzNZbEkJt2u/lola@zeroid.bit'>Lola</a>.</p>
-                <p>Like this project ? Check also <a href='/ZeroLSTN.bit/'>ZeroSTLN</a>.</p>
+                <Header as='h3' inverted>Other</Header>
+                <p>Like this project ? Check also <a href='/ZeroLSTN.bit/'>ZeroLSTN</a>.</p>
               </Grid.Column>
             </Grid>
           </Container>
