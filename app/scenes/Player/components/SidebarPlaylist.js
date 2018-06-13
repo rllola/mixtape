@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Segment, Header, Modal, Button } from 'semantic-ui-react'
+import { Segment, Header, Modal, Button, Grid } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
 
@@ -59,11 +59,17 @@ class SidebarPlaylist extends Component {
       <div>
         {/* Sidebar header */}
         <Segment inverted basic>
-          <Header as='h1'>
-            { title }
-            <FollowFeed hub={this.props.hub.address} style={{marginLeft: '10px', verticalAlign: '20%'}} />
-            <SupportOptionalFileButton hub={this.props.hub.address} title={title} style={{ marginLeft: '75px' }} />
-          </Header>
+          <Grid>
+            <Grid.Column width={12} >
+              <Header inverted as='h1'>
+                { title }
+                <FollowFeed hub={this.props.hub.address} style={{marginLeft: '10px', verticalAlign: '20%'}} />
+              </Header>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <SupportOptionalFileButton hub={this.props.hub.address} title={title} />
+            </Grid.Column>
+          </Grid>
           <br />
           <p>{ description }</p>
           <br />
