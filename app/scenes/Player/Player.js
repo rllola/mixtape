@@ -46,6 +46,14 @@ class Player extends Component {
     this.player.play()
   }
 
+  pause = () => {
+    if (this.player.paused) {
+      this.player.play()
+    } else {
+      this.player.pause()
+    }
+  }
+
   handleToggleClick () {
     this.visible = !this.visible
   }
@@ -78,7 +86,7 @@ class Player extends Component {
             <Grid.Column stretched floated='left' width={1} verticalAlign='middle'>
               <span onClick={this.handleToggleClick.bind(this)} style={togglerStyle}>  &lt; </span>
             </Grid.Column>
-            <Grid.Column width={15} textAlign='center' verticalAlign='bottom'>
+            <Grid.Column width={15} textAlign='center' onClick={this.pause}>
               <audio id='audioPlayer' onEnded={this.onEnded.bind(this)} controls />
             </Grid.Column>
           </Grid.Row>
