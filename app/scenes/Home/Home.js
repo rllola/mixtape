@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { Link } from 'react-router-dom'
 import {
   Container,
   Divider,
   Header,
   Segment,
   Image,
-  Grid
+  Grid,
+  Button
 } from 'semantic-ui-react'
 
 import SelectUser from '../../components/SelectUser'
+
 import MyHubs from './components/MyHubs'
 import PublicHubs from './components/PublicHubs'
 
@@ -59,6 +62,18 @@ class Home extends Component {
             <Header as='h3' style={{ fontSize: '2em' }}>Public Hubs</Header>
 
             <PublicHubs />
+
+            <Divider
+              as='h4'
+              className='header'
+              horizontal
+              style={{ margin: '3em 0em' }} />
+
+            <Grid centered>
+              <Button as={Link} to='/create' basic size='massive' color='blue'>
+                Create a Mixtape
+              </Button>
+            </Grid>
 
           </Container>
         </Segment>
