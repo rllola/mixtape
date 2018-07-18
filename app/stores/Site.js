@@ -19,6 +19,8 @@ class Site extends ZeroFrame {
 
     this.feedListFollow()
 
+    this.fetchHubs()
+
     this.cmd('siteInfo', {}, (info) => {
       this.setSiteInfo(info)
       if (info.settings.permissions.indexOf('Merger:Mixtape') === -1) {
@@ -138,7 +140,7 @@ class Site extends ZeroFrame {
     }
 
     return this.cmdp('feedFollow', [newFeeds])
-      .then(() => {
+      .then((res) => {
         this.setFeeds(newFeeds)
       })
   }
@@ -149,7 +151,7 @@ class Site extends ZeroFrame {
     delete newFeeds[hub]
 
     return this.cmdp('feedFollow', [newFeeds])
-      .then(() => {
+      .then((res) => {
         this.setFeeds(newFeeds)
       })
   }
@@ -158,6 +160,22 @@ class Site extends ZeroFrame {
     return this.cmdp('feedListFollow')
       .then((res) => {
         this.setFeeds(res)
+      })
+  }
+
+  supportHub (hub, title) {
+    return this.cmdp('optionalHelpAll', {value: true, address: hub})
+      .then(() => {
+        /* Update with new value */
+        this.fetchHubs()
+      })
+  }
+
+  unsupportHub (hub) {
+    return this.cmdp('optionalHelpAll', {value: false, address: hub})
+      .then(() => {
+        /* Update with new value */
+        this.fetchHubs()
       })
   }
 

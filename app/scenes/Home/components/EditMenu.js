@@ -3,15 +3,17 @@ import { Dropdown } from 'semantic-ui-react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 
+import EditModal from './EditModal'
+
 @observer
 class EditMenu extends Component {
   @observable color = '#ccc'
+  @observable openEdit = false
 
   handleClickMenu (event) {
     console.log('Clicked Menu !')
 
     event.preventDefault()
-
   }
 
   handleMouseEnter () {
@@ -40,30 +42,22 @@ class EditMenu extends Component {
     }, this.props.style)
   }
 
-  handleFollowClick () {
-    console.log('Folow !')
-  }
-
-  handleSupportClick () {
-    console.log('Support !')
-  }
-
   handleEditClick () {
-    console.log('Edit !')
+    this.openEdit = true
   }
-
 
   render () {
     return (
       <Dropdown text='⋮' icon='none' onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyles()} onClick={this.handleClickMenu}>
         <Dropdown.Menu>
-          <Dropdown.Item text={{'Follow'}} onClick={this.handleFollowClick.bind(this)} />
-          <Dropdown.Item text='Support ✔' onClick={this.handleFollowClick.bind(this)} />
+          <Dropdown.Item text={this.props.isFollowing ? 'Follow ✔' : 'Follow'} onClick={this.props.isFollowing ? this.props.unfollowFeed : this.props.followFeed} />
+          <Dropdown.Item text={this.props.isSupporting ? 'Support ✔' : 'Support'} onClick={this.props.isSupporting ? this.props.unsupportPlaylist : this.props.supportPlaylist} />
           { this.props.hubInfo.settings.own ?
             <Dropdown.Divider /> : null }
           { this.props.hubInfo.settings.own ?
             <Dropdown.Item text='Edit' onClick={this.handleEditClick.bind(this)} />
             : null }
+          <EditModal open={this.openEdit} close={() => { this.openEdit = false}} />
         </Dropdown.Menu>
       </Dropdown>
     )

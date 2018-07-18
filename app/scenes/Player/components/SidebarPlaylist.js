@@ -67,7 +67,7 @@ class SidebarPlaylist extends Component {
               </Header>
             </Grid.Column>
             <Grid.Column width={4}>
-              <SupportOptionalFileButton hub={this.props.hub.address} title={title} />
+              <SupportOptionalFileButton hub={this.props.hub} />
             </Grid.Column>
           </Grid>
           <br />

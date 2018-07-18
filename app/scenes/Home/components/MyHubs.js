@@ -11,10 +11,6 @@ const MAX_HUBS_SHOWN = 9
 @inject('site')
 @observer
 class MyHubs extends Component {
-  componentWillMount () {
-    this.props.site.fetchHubs()
-  }
-
   render () {
     return (
       <Grid>
@@ -36,11 +32,11 @@ class MyHubs extends Component {
                         {/* Need to be in container component...*/}
                         <EditMenu hubInfo={value[1]}
                           isFollowing={this.props.site.feeds[value[0]]}
-                          followFeed={this.props.site.followFeed(value[1])}
-                          unfollowFeed={this.props.site.unfollowFeed(value[1])}
-                          isSupporting={true}
-                          supportPlaylist={() => console.log('Support ', value[1])}
-                          unsupportPlaylist={() => console.log('Support ', value[1])}/>
+                          followFeed={() => {this.props.site.followFeed(value[0])}}
+                          unfollowFeed={() => {this.props.site.unfollowFeed(value[0])}}
+                          isSupporting={value[1].settings.autodownloadoptional}
+                          supportPlaylist={() => {this.props.site.supportHub(value[0], value[1].content.title)}}
+                          unsupportPlaylist={() => {this.props.site.unsupportHub(value[0])}} />
                       </Card.Header>
                       <Card.Meta>{moment(value[1].content.modified, 'X').fromNow()}</Card.Meta>
                       <Card.Description>

@@ -10,12 +10,12 @@ import Playlist from './stores/Playlist'
 
 import Home from './scenes/Home'
 import Player from './scenes/Player'
-import CreateMixtape from './scenes/CreateMixtape'
 
 const browserHistory = createHistory({
   basename: location.pathname,
   forceRefresh: false
 })
+
 const site = new Site(browserHistory)
 const playlist = new Playlist(site)
 
@@ -32,7 +32,6 @@ class Application extends Component {
           <div>
             <Route exact path='/' component={Home} />
             <Route path='/playlist/:hub' component={Player} />
-            <Route path='/create' component={CreateMixtape} />
             <Route path='/public' render={() => { return (<p>Hello World</p>) }} />
             <Route path='/playlists' render={() => { return (<p>Hello World</p>) }} />
           </div>
