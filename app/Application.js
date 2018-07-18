@@ -15,6 +15,7 @@ const browserHistory = createHistory({
   basename: location.pathname,
   forceRefresh: false
 })
+
 const site = new Site(browserHistory)
 const playlist = new Playlist(site)
 

@@ -4,15 +4,13 @@ import { Link } from 'react-router-dom'
 import { Card, Button, Grid } from 'semantic-ui-react'
 import moment from 'moment'
 
+import EditMenu from './EditMenu'
+
 const MAX_HUBS_SHOWN = 9
 
 @inject('site')
 @observer
 class MyHubs extends Component {
-  componentWillMount () {
-    this.props.site.fetchHubs()
-  }
-
   render () {
     return (
       <Grid>
@@ -27,10 +25,25 @@ class MyHubs extends Component {
                   to={{
                     pathname: '/playlist/' + value[0],
                     state: { hub: value[1] }
-                  }}
-                  header={value[1].content.title}
-                  meta={moment(value[1].content.modified, 'X').fromNow()}
-                  description={value[1].content.description} />
+                  }}>
+                    <Card.Content>
+                      <Card.Header>
+                        {value[1].content.title}
+                        {/* Need to be in container component...*/}
+                        <EditMenu hubInfo={value[1]}
+                          isFollowing={this.props.site.feeds[value[0]]}
+                          followFeed={() => {this.props.site.followFeed(value[0])}}
+                          unfollowFeed={() => {this.props.site.unfollowFeed(value[0])}}
+                          isSupporting={value[1].settings.autodownloadoptional}
+                          supportPlaylist={() => {this.props.site.supportHub(value[0], value[1].content.title)}}
+                          unsupportPlaylist={() => {this.props.site.unsupportHub(value[0])}} />
+                      </Card.Header>
+                      <Card.Meta>{moment(value[1].content.modified, 'X').fromNow()}</Card.Meta>
+                      <Card.Description>
+                        {value[1].content.description}
+                      </Card.Description>
+                    </Card.Content>
+                  </Card>
               )
             })
           }

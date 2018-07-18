@@ -1,21 +1,38 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
+import { observable } from 'mobx'
+import { Link } from 'react-router-dom'
 import {
   Container,
   Divider,
   Header,
   Segment,
   Image,
-  Grid
+  Grid,
+  Button,
+  Modal
 } from 'semantic-ui-react'
 
 import SelectUser from '../../components/SelectUser'
+
 import MyHubs from './components/MyHubs'
 import PublicHubs from './components/PublicHubs'
+
+const MIXTAPE_CLONE_DEFAULT = '1FEyUA9W4jfSZRREgqHEUstQGhUeaNcRWG'
 
 @inject('site')
 @observer
 class Home extends Component {
+  @observable showModal = false
+
+  createMixtape () {
+    if (this.props.site.siteInfo.settings.permissions.indexOf('ADMIN') < 0) {
+      this.showModal = true
+    } else {
+      this.props.site.cloneSite(MIXTAPE_CLONE_DEFAULT)
+    }
+  }
+
   render () {
     return (
       <div>
@@ -59,6 +76,32 @@ class Home extends Component {
             <Header as='h3' style={{ fontSize: '2em' }}>Public Hubs</Header>
 
             <PublicHubs />
+
+            <Divider
+              as='h4'
+              className='header'
+              horizontal
+              style={{ margin: '3em 0em' }} />
+
+            <Grid centered>
+              <Button basic size='massive' color='blue' onClick={this.createMixtape.bind(this)} >
+                Create a Mixtape
+              </Button>
+              <Modal open={this.showModal} basic size='small'>
+                <Header content='Create a new Mixtape' />
+                <Modal.Content>
+                  <p>You need ADMIN permission to be able to create mixtape. If you dont want to grant Mixtape admin permission you can follow this tutorial : <a href='/1EMcXwk7qQdY3pbj86A98gZHjDBNRrscdL/?Post:59:Creating+your+Mixtape+on+ZeroNet+(Spotify+alternative)'>Creating your Mixtape on ZeroNet (Spotify alternative)</a> </p>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button basic color='red' inverted onClick={() => {this.showModal = false}}>
+                    I do not want to grant permission
+                  </Button>
+                  <Button color='green' inverted onClick={() => {this.props.site.adminPermission(); this.showModal = false}}>
+                    I understand
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+            </Grid>
 
           </Container>
         </Segment>

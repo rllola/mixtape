@@ -17,6 +17,10 @@ class Site extends ZeroFrame {
 
     this.fetchServerInfo()
 
+    this.feedListFollow()
+
+    this.fetchHubs()
+
     this.cmd('siteInfo', {}, (info) => {
       this.setSiteInfo(info)
       if (info.settings.permissions.indexOf('Merger:Mixtape') === -1) {
@@ -136,7 +140,7 @@ class Site extends ZeroFrame {
     }
 
     return this.cmdp('feedFollow', [newFeeds])
-      .then(() => {
+      .then((res) => {
         this.setFeeds(newFeeds)
       })
   }
@@ -147,7 +151,7 @@ class Site extends ZeroFrame {
     delete newFeeds[hub]
 
     return this.cmdp('feedFollow', [newFeeds])
-      .then(() => {
+      .then((res) => {
         this.setFeeds(newFeeds)
       })
   }
@@ -158,6 +162,43 @@ class Site extends ZeroFrame {
         this.setFeeds(res)
       })
   }
+
+  supportHub (hub, title) {
+    return this.cmdp('optionalHelpAll', {value: true, address: hub})
+      .then(() => {
+        /* Update with new value */
+        this.fetchHubs()
+      })
+  }
+
+  unsupportHub (hub) {
+    return this.cmdp('optionalHelpAll', {value: false, address: hub})
+      .then(() => {
+        /* Update with new value */
+        this.fetchHubs()
+      })
+  }
+
+  cloneSite (hub) {
+    return this.cmdp('siteClone', [hub])
+      .then((res) => {
+        console.log('Site cloned')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  createMixtape (name, description, isPublic) {
+    console.log('Create new mixtape : ', {name, description, isPublic})
+    this.cloneSite('1FEyUA9W4jfSZRREgqHEUstQGhUeaNcRWG')
+  }
+
+  adminPermission () {
+    console.log('Ask for admin permission')
+    this.cmd('wrapperPermissionAdd', 'ADMIN')
+  }
+
 }
 
 export default Site
