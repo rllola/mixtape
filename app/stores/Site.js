@@ -189,14 +189,56 @@ class Site extends ZeroFrame {
       })
   }
 
+  fileGet (innerPath) {
+    return this.cmdp('fileGet', [innerPath, false])
+  }
+
+  editFile (innerPath, content) {
+    return this.cmdp('fileWrite', [innerPath, fileEncode(content)])
+  }
+
+  signAndPublish (innerPath) {
+    return this.cmdp('siteSign', {inner_path: innerPath})
+      .then((res) => {
+        if (res !== 'ok') {
+          throw new Error('Failed to sign content')
+        }
+
+        return this.cmdp('sitePublish', {inner_path: innerPath})
+      })
+  }
+
+  editMixtape (hub, title, description) {
+    let innerPath = 'merged-Mixtape/' + hub + '/content.json'
+    // Ugly ! We should be using await/async
+    return this.fileGet(innerPath)
+      .then((content) => {
+        content = JSON.parse(content)
+
+        if (!content.signers) {
+          content.signers = [this.siteInfo.auth_address]
+        }
+
+        content.title = title ? title : content.title
+        content.description = description ? description : content.description
+
+        return this.editFile(innerPath, content)
+          .then((res) => {
+            if (res !== 'ok') {
+              throw new Error('Fail to edit')
+            }
+
+            // We modified we need to update hubs info now
+            this.fetchHubs()
+
+            return this.signAndPublish(innerPath)
+          })
+      })
+  }
+
   createMixtape (name, description, isPublic) {
     console.log('Create new mixtape : ', {name, description, isPublic})
     this.cloneSite('1FEyUA9W4jfSZRREgqHEUstQGhUeaNcRWG')
-  }
-
-  adminPermission () {
-    console.log('Ask for admin permission')
-    this.cmd('wrapperPermissionAdd', 'ADMIN')
   }
 
 }

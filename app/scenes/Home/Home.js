@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { observable } from 'mobx'
 import { Link } from 'react-router-dom'
 import {
   Container,
@@ -23,14 +22,8 @@ const MIXTAPE_CLONE_DEFAULT = '1FEyUA9W4jfSZRREgqHEUstQGhUeaNcRWG'
 @inject('site')
 @observer
 class Home extends Component {
-  @observable showModal = false
-
   createMixtape () {
-    if (this.props.site.siteInfo.settings.permissions.indexOf('ADMIN') < 0) {
-      this.showModal = true
-    } else {
-      this.props.site.cloneSite(MIXTAPE_CLONE_DEFAULT)
-    }
+    this.props.site.cloneSite(MIXTAPE_CLONE_DEFAULT)
   }
 
   render () {
@@ -87,20 +80,6 @@ class Home extends Component {
               <Button basic size='massive' color='blue' onClick={this.createMixtape.bind(this)} >
                 Create a Mixtape
               </Button>
-              <Modal open={this.showModal} basic size='small'>
-                <Header content='Create a new Mixtape' />
-                <Modal.Content>
-                  <p>You need ADMIN permission to be able to create mixtape. If you dont want to grant Mixtape admin permission you can follow this tutorial : <a href='/1EMcXwk7qQdY3pbj86A98gZHjDBNRrscdL/?Post:59:Creating+your+Mixtape+on+ZeroNet+(Spotify+alternative)'>Creating your Mixtape on ZeroNet (Spotify alternative)</a> </p>
-                </Modal.Content>
-                <Modal.Actions>
-                  <Button basic color='red' inverted onClick={() => {this.showModal = false}}>
-                    I do not want to grant permission
-                  </Button>
-                  <Button color='green' inverted onClick={() => {this.props.site.adminPermission(); this.showModal = false}}>
-                    I understand
-                  </Button>
-                </Modal.Actions>
-              </Modal>
             </Grid>
 
           </Container>
