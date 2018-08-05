@@ -215,14 +215,15 @@ class Site extends ZeroFrame {
       .then((content) => {
         content = JSON.parse(content)
 
-        console.log(content)
+        if (!content.signers) {
+          content.signers = [this.siteInfo.auth_address]
+        }
 
         content.title = title ? title : content.title
         content.description = description ? description : content.description
 
         return this.editFile(innerPath, content)
           .then((res) => {
-            console.log(res)
             if (res !== 'ok') {
               throw new Error('Fail to edit')
             }

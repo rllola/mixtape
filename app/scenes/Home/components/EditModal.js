@@ -9,8 +9,8 @@ class EditModal extends Component {
     super()
 
     this.state = {
-      title: '',
-      description: '',
+      title: null,
+      description: null,
     }
   }
 
@@ -28,14 +28,14 @@ class EditModal extends Component {
   }
 
   handleSaveClick () {
-    this.props.site.editMixtape(this.props.hub, this.state.title, this.state.description)
+    this.props.site.editMixtape(this.props.hub.address, this.state.title, this.state.description)
       .then((res) => {
-        console.log(res)
         this.props.close()
       })
-      .catch(function (err) {
+      .catch((err) => {
+        // Need a modal to inform on the error
         console.error(err)
-        console.log('Something bad happened')
+        this.props.close()
       })
   }
 
@@ -48,10 +48,10 @@ class EditModal extends Component {
             <Form>
               <Form.Field>
                 <label>Mixtape name</label>
-                <input value={this.state.title} onChange={this.handleTitleChange.bind(this)} placeholder='Mixtape name' />
+                <input value={this.state.title === null ? this.props.hub.content.title : this.state.title} onChange={this.handleTitleChange.bind(this)} placeholder='Mixtape name' />
               </Form.Field>
               <Form.Field>
-                <Form.TextArea value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} label='Description' placeholder='What kind of vibe' />
+                <Form.TextArea value={this.state.description === null ? this.props.hub.content.description : this.state.description} onChange={this.handleDescriptionChange.bind(this)} label='Description' placeholder='What kind of vibe' />
               </Form.Field>
             </Form>
           </Modal.Description>

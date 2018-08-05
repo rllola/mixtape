@@ -57,7 +57,7 @@ class EditMenu extends Component {
           { this.props.hubInfo.settings.own ?
             <Dropdown.Item text='Edit' onClick={this.handleEditClick.bind(this)} />
             : null }
-          <EditModal open={this.openEdit} hub={this.props.hubInfo.address} close={() => { this.openEdit = false}} />
+          <EditModal open={this.openEdit} hub={this.props.hubInfo} close={() => { this.openEdit = false}} />
         </Dropdown.Menu>
       </Dropdown>
     )
