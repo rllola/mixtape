@@ -48,7 +48,7 @@ class EditMenu extends Component {
 
   render () {
     return (
-      <Dropdown text='⋮' icon='none' onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyles()} onClick={this.handleClickMenu}>
+      <Dropdown text='⋮' icon={false} onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyles()} onClick={this.handleClickMenu}>
         <Dropdown.Menu>
           <Dropdown.Item text={this.props.isFollowing ? 'Follow ✔' : 'Follow'} onClick={this.props.isFollowing ? this.props.unfollowFeed : this.props.followFeed} />
           <Dropdown.Item text={this.props.isSupporting ? 'Support ✔' : 'Support'} onClick={this.props.isSupporting ? this.props.unsupportPlaylist : this.props.supportPlaylist} />
@@ -57,7 +57,7 @@ class EditMenu extends Component {
           { this.props.hubInfo.settings.own ?
             <Dropdown.Item text='Edit' onClick={this.handleEditClick.bind(this)} />
             : null }
-          <EditModal open={this.openEdit} close={() => { this.openEdit = false}} />
+          <EditModal open={this.openEdit} hub={this.props.hubInfo.address} close={() => { this.openEdit = false}} />
         </Dropdown.Menu>
       </Dropdown>
     )
