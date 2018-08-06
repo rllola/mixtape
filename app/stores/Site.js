@@ -241,6 +241,17 @@ class Site extends ZeroFrame {
     this.cloneSite('1FEyUA9W4jfSZRREgqHEUstQGhUeaNcRWG')
   }
 
+  editPermission (hub, permissions) {
+    let innerPath = 'merged-Mixtape/' + hub + '/data/users/content.json'
+
+    return this.fileGet(innerPath)
+      .then((content) => {
+        content = JSON.parse(content)
+
+        console.log(content)
+      })
+  }
+
 }
 
 export default Site

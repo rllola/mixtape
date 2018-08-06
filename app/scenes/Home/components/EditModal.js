@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Modal, Button } from 'semantic-ui-react'
+import { Form, Modal, Button, Table } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
 
-@inject('site')
+@inject('site', 'playlist')
 @observer
 class EditModal extends Component {
   constructor () {
@@ -11,7 +11,20 @@ class EditModal extends Component {
     this.state = {
       title: null,
       description: null,
+      permissions: [],
+      permissionRules: []
     }
+  }
+
+  componentDidMount () {
+    this.props.playlist.getHubRules(this.props.hub.address)
+      .then((rules) => {
+        rules = JSON.parse(rules)
+        let permissions = Object.entries(rules.user_contents.permissions)
+        let permissionRules = Object.entries(rules.user_contents.permission_rules)
+
+        this.setState({permissions: permissions, permissionRules: permissionRules})
+      })
   }
 
   handleTitleChange (event) {
@@ -52,6 +65,52 @@ class EditModal extends Component {
               </Form.Field>
               <Form.Field>
                 <Form.TextArea value={this.state.description === null ? this.props.hub.content.description : this.state.description} onChange={this.handleDescriptionChange.bind(this)} label='Description' placeholder='What kind of vibe' />
+              </Form.Field>
+              <Form.Field>
+                <label>Permissions</label>
+                <Table basic='very'>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Address/Id</Table.HeaderCell>
+                      <Table.HeaderCell>Max Size</Table.HeaderCell>
+                      <Table.HeaderCell>Max Optional Size</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {this.state.permissions.map((element, index) => {
+                      return (
+                        <Table.Row key={index}>
+                          <Table.Cell>{element[0]}</Table.Cell>
+                          <Table.Cell>{element[1].max_size}</Table.Cell>
+                          <Table.Cell>{element[1].max_size_optional || 'N/A' }</Table.Cell>
+                        </Table.Row>
+                      )
+                    })}
+                  </Table.Body>
+                </Table>
+              </Form.Field>
+              <Form.Field>
+                <label>Permissions Rules</label>
+                <Table basic='very'>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Id certificate</Table.HeaderCell>
+                      <Table.HeaderCell>Max Size</Table.HeaderCell>
+                      <Table.HeaderCell>Max Optional Size</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {this.state.permissionRules.map((element, index) => {
+                      return (
+                        <Table.Row key={index}>
+                          <Table.Cell>{element[0]}</Table.Cell>
+                          <Table.Cell>{element[1].max_size}</Table.Cell>
+                          <Table.Cell>{element[1].max_size_optional || 'N/A' }</Table.Cell>
+                        </Table.Row>
+                      )
+                    })}
+                  </Table.Body>
+                </Table>
               </Form.Field>
             </Form>
           </Modal.Description>
