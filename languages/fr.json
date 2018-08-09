@@ -1,0 +1,62 @@
+{
+  "Share your playlist": "Partager votre playlist",
+  "My Hubs": "Mes Hubs",
+  "Public Hubs": "Hubs Publiques",
+  "About": "A Propos",
+  "Mixtape is a playlist sharing platform created with the purpose of sharing your favorite music with friends and strangers. It also allow building playlist with several of your friends which will be grouped in a hub.":"Mixtape est une platforme qui permet de créer des playlists que vous opuvez ensuite partager avec vos amis. Mixtape permet aussi de collaborer pour créer des playlists.",
+  "Why ?": "Pourquoi",
+  "Because I can.": "Pourquoi pas.",
+  "Donation": "Dons",
+  "You can help me to improve Mixtape by doing a donation. Those donations would not only be use for Mixtape, I will also dedicate some of my times writting on my experience/good practice/libraries/plugins. As much as possible I will engage myself in giving back to the Zeronet community by focusing on documenting my work.": "Vous pouvez m'aider à améliorer Mixtape en soutenant le projet. Un soutiens financier me permettra aussi de dédier plus de temps pour documenter mon travail sur Zeronet et déveloper des outils/tutoriels/articles pour aider la communauté Zeronet.",
+  "Why Dogecoin ?": "Pourquoi Dogecoin",
+  "I dunno. Fun.": "Pourquoi pas. Fun.",
+  "Ressources": "Ressources",
+  "Other": "Autres",
+  "Like this project ? Check also": "Vous aimez ce projet ? Regarder aussi",
+
+  "Follow ✔": "Suivre ✔",
+  "Follow": "Suivre",
+  "Support ✔": "Supporter ✔",
+  "Support": "Supporter",
+
+  "Edit Playlist": "Modifier la playlist",
+  "Mixtape name": "Nom de la Mixtape",
+  "Description": "Description",
+  "What kind of vibe": "Quel genre de musique",
+
+  "Permissions": "Permissions",
+  "Address/Id": "Adresse/Id",
+  "Max Size": "Taille Max",
+  "Max Optional Size": "Taille Optionel Max",
+  "Permissions Rules": "Règle pour les permissions",
+  "Id certificate": "Certificat Id",
+  "Discard": "Annuler",
+  "Save": "Enregistrer",
+
+  "See all": "Voir tout",
+
+  "Upload Form": "Formulaire d'enregistrement",
+  "Nope": "Nope",
+
+  "Support this playlist by automatically downloading every songs.": "Supporter la playlist en téléchargement automatiquement tout les chansons.",
+
+  "Add to your newsfeed": "Ajouter à votre fils d'actualité",
+
+  "Thumbnail file should be smaller than 1MB.": "Les covertures doivent être plus petit que 1MB.",
+  "Click to select an image": "Cliquer pour choisir une image",
+  "Edit song": "Editer chanson",
+  "Uploading file...": "Fichier en cours de téléchargement...",
+  "Click to select a thumbnail for your song (240x196).": "Cliquer pour choisir une couverture pour votre chanson (240x196).",
+  "Artist": "Artiste",
+  "Title": "Titre",
+  "Submit": "Enregistrer",
+
+  "Edit": "Editer",
+  "Delete": "Supprimer",
+
+  "Thank you for uploading": "Merci pour votre ajout",
+
+  "Back": "Retour",
+  "Select User": "Choisissez un utilisateur"
+
+}

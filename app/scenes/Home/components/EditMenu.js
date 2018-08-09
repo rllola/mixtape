@@ -11,8 +11,6 @@ class EditMenu extends Component {
   @observable openEdit = false
 
   handleClickMenu (event) {
-    console.log('Clicked Menu !')
-
     event.preventDefault()
   }
 

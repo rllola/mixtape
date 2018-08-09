@@ -138,9 +138,7 @@ class Home extends Component {
             <Grid style={{textAlign: 'center'}}>
               <Grid.Column width={8}>
                 <Header as='h3' inverted>Ressources</Header>
-                <a href='/1EMcXwk7qQdY3pbj86A98gZHjDBNRrscdL/?Post:59:Creating+your+Mixtape+on+ZeroNet+(Spotify+alternative)'>Creating your Mixtape on ZeroNet (Spotify alternative)</a>
-                {/*<p>Bitcoin : 1BzrPMr7qrca2wMV4a1qeH4CmJEKtAbrKW</p>
-                <p>Dogecoin : DR252U5g3DECTpXsx8t4PBaePgepD1oADw</p> */}
+                <a href='/1EMcXwk7qQdY3pbj86A98gZHjDBNRrscdL/?Post:59:Creating+your+Mixtape+on+ZeroNet+(Spotify+alternative)'>Creating your Mixtape on ZeroNet (Spotify alternative)</a>  
               </Grid.Column>
               <Grid.Column width={8}>
                 <Header as='h3' inverted>Other</Header>
