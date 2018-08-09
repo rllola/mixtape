@@ -12,6 +12,6 @@
  "signs": {},
  "signs_required": 1,
  "title": "Mixtape Staging",
- "translate": ["js/all.js"],
+ "translate": ["dist/all.js"],
  "zeronet_version": "0.6.2"
 }
