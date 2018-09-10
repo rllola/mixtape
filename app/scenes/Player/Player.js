@@ -11,6 +11,16 @@ import BackButton from '../../components/BackButton'
 class Player extends Component {
   @observable visible = true
   @observable fetching = true
+  @observable hubDetail
+
+  constructor (props) {
+    super(props)
+
+    if (this.props.location.state) {
+      this.hubDetail = this.props.location.state.hub
+    }
+
+  }
 
   componentDidMount () {
     this.hub = this.props.match.params.hub
@@ -23,6 +33,16 @@ class Player extends Component {
       .then(() => {
         if (this.props.playlist.src) {
           this.player.src = this.props.playlist.src
+        }
+
+        // hacky
+        if (!this.hubDetail) {
+          this.props.site.hubs.forEach((element) => {
+            if (element[0] === this.hub) {
+              this.hubDetail = element[1]
+            }
+          })
+
         }
         this.fetching = false
       })
@@ -74,7 +94,7 @@ class Player extends Component {
       <Sidebar.Pushable style={{ height: '100vh' }}>
         <Sidebar animation='uncover' width='wide' visible={this.visible} style={{ backgroundColor: '#1b1c1d', overflow: 'hidden !important' }}>
 
-          {this.fetching ? <Loader /> : <SidebarPlaylist hub={this.props.location.state.hub} />}
+          {this.fetching ? <Loader /> : <SidebarPlaylist hub={this.hubDetail} />}
 
           <BackButton />
 

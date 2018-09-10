@@ -24,6 +24,14 @@ let store = {
   playlist
 }
 
+let search = location.search.slice(1)
+
+search = search.split('&')
+
+if (search.length > 1) {
+  browserHistory.replace('/' + search[0])
+}
+
 class Application extends Component {
   render () {
     return (
