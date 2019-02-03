@@ -29,7 +29,7 @@ class MyHubs extends Component {
                     <Card.Content>
                       <Card.Header>
                         {value[1].content.title}
-                        {/* Need to be in container component...*/}
+                        {/* Need to be in container component... */}
                         <EditMenu hubInfo={value[1]}
                           isFollowing={this.props.site.feeds[value[0]]}
                           followFeed={() => {this.props.site.followFeed(value[0])}}
