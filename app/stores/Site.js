@@ -9,6 +9,7 @@ class Site extends ZeroFrame {
   @observable siteInfo
   @observable hubs = []
   @observable feeds = []
+  @observable playlistIndex = []
 
   constructor (history) {
     super()
@@ -21,8 +22,12 @@ class Site extends ZeroFrame {
 
     this.fetchHubs()
 
+    // Fetch the playlists which can be downloaded
+    this.fetchMixtapeIndexPlaylist()
+
     this.cmd('siteInfo', {}, (info) => {
       this.setSiteInfo(info)
+
       if (info.settings.permissions.indexOf('Merger:Mixtape') === -1) {
         this.cmd('wrapperPermissionAdd', 'Merger:Mixtape')
       }
@@ -67,6 +72,11 @@ class Site extends ZeroFrame {
   @action.bound
   setFeeds (feeds) {
     this.feeds = feeds
+  }
+
+  @action.bound
+  setPlaylistIndex (playlists) {
+    this.playlistIndex = playlists
   }
 
   onRequest (cmd, message) {
@@ -250,6 +260,17 @@ class Site extends ZeroFrame {
 
         console.log(content)
       })
+  }
+
+  fetchMixtapeIndexPlaylist () {
+    let query = 'SELECT * FROM playlist'
+    return new Promise((resolve, reject) => {
+      this.cmdp('dbQuery', [query])
+        .then((response) => {
+          this.setPlaylistIndex(response)
+          resolve()
+        })
+    })
   }
 
 }

@@ -9,12 +9,9 @@
 		},
 		".+/data/users/.+/data.json": {
 			"to_table": [
-				"song"
+				"song", "playlist"
 			],
 			"to_json_table": ["hub"]
-		},
-		"data.json": {
-			"to_table": [ "public_hub" ]
 		}
 	},
 	"tables": {
@@ -42,6 +39,19 @@
 			],
 			"indexes": ["CREATE UNIQUE INDEX song_key ON song(json_id, song_id)", "CREATE INDEX song_id ON song(song_id)", "CREATE INDEX added ON song(date_added)"],
 			"schema_changed": 2
+		},
+		"playlist": {
+			"cols": [
+				["playlist_id", "INTEGER"],
+				["hub_address", "TEXT"],
+				["title", "TEXT"],
+				["description", "TEXT"],
+				["creator", "TEXT"],
+				["hub", "TEXT"],
+				["json_id", "INTEGER REFERENCES json (json_id)"]
+			],
+			"indexes": ["CREATE UNIQUE INDEX playlist_key ON song(json_id, playlist_id)", "CREATE INDEX playlist_id ON playlist(playlist_id)"],
+			"schema_changed": 3
 		}
 	}
 }

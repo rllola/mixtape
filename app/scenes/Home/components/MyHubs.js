@@ -17,6 +17,7 @@ class MyHubs extends Component {
         <Grid.Row>
           <Card.Group>
             { this.props.site.hubs.slice(0, MAX_HUBS_SHOWN).map((value) => {
+              if (value[1].content.mixtape_index) { return }
               return (
                 <Card
                   key={value[0]}
