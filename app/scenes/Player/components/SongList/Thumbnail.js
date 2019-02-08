@@ -13,7 +13,8 @@ class Thumbnail extends Component {
 
     this.state = {
       active: false,
-      edit: false
+      edit: false,
+      errorThumbnail: false
     }
   }
 
@@ -38,8 +39,12 @@ class Thumbnail extends Component {
     this.setState({edit: false})
   }
 
+  handleErrorThumbnail = () => {
+    this.setState({errorThumbnail: true})
+  }
+
   render () {
-    const { active } = this.state
+    const { active, errorThumbnail } = this.state
     const contentStyle = {
       WebkitUserSelect: 'none', /* Safari */
       MozUserSelect: 'none', /* Firefox */
@@ -73,8 +78,9 @@ class Thumbnail extends Component {
           onClick={() => { this.props.playlist.playSong(this.props.index) }}>
           <Dimmer style={{ cursor: 'pointer' }} active={active} content={content} />
           <Image
+            onError={this.handleErrorThumbnail}
             style={{ width: '175px', height: '141px' }}
-            src={this.props.song.thumbnail_file_name
+            src={this.props.song.thumbnail_file_name && !errorThumbnail
               ? '/' + Constants.APP_ID + '/merged-Mixtape/' + this.props.song.site + '/' + this.props.song.directory + '/' + this.props.song.thumbnail_file_name
               : 'assets/img/thumbnail.png'} />
         </Dimmer.Dimmable>
