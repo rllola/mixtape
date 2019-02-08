@@ -28,7 +28,11 @@ class PublicHubs extends Component {
                   })
                 }
               </Card.Group>)
-            : <p style={{ color: 'DarkGray'}}>Nothing listed yet ? Please check our <a href='/1Nwdm8MooUizdkgaUdAdqqjyK1xXjY57PK'>default playlist index</a>.</p>
+            : <p style={{ color: 'DarkGray'}}>
+              Nothing listed yet ? Please check our <a href='/1Nwdm8MooUizdkgaUdAdqqjyK1xXjY57PK'>default playlist index</a>.
+              <br/>
+              Still not showing ? Try rebuilding the database by pulling the panel on the right --->
+          </p>
           }
         </Grid.Row>
         <Grid.Row centered>
