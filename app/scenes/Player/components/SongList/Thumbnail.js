@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, Dimmer } from 'semantic-ui-react'
+import { Image, Dimmer, Button } from 'semantic-ui-react'
 import { inject } from 'mobx-react'
 
 import EditSong from './EditSong'
@@ -56,9 +56,10 @@ class Thumbnail extends Component {
       <br />
       <br />
       {getUserAddressFromDirectory(this.props.song.directory) === this.props.site.siteInfo.auth_address
-        ? <div style={{'textAlign': 'center'}}>
-          <button onClick={this.handleEditClicked} className='ui inverted button'>Edit</button><button onClick={this.handleDeleteClicked} className='ui inverted red button'>Delete</button>
-        </div>
+        ? <Button.Group>
+          <Button onClick={this.handleEditClicked} inverted content='Edit' />
+          <Button onClick={this.handleDeleteClicked} inverted color='red' content='Delete' />
+        </Button.Group>
         : null}
     </div>)
 
