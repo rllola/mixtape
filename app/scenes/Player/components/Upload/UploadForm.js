@@ -77,7 +77,7 @@ class UploadForm extends Component {
 
     return (
       isUploading
-        ? <Loader size='massive'>Uploading file...</Loader>
+        ? <Modal.Content><Dimmer active><Loader inverted size='massive'>Uploading file...</Loader></Dimmer></Modal.Content>
         : <Modal.Content>
           {this.state.error ? <Message content={this.state.error} negative /> : null}
           <Grid>
