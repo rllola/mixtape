@@ -25,7 +25,7 @@
 				["hub", "TEXT"]
 			],
 			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, site, file_name)"],
-			"schema_changed": 4
+			"schema_changed": 5
 		},
 		"song": {
 			"cols": [
@@ -38,7 +38,7 @@
 				["json_id", "INTEGER REFERENCES json (json_id)"]
 			],
 			"indexes": ["CREATE UNIQUE INDEX song_key ON song(json_id, song_id)", "CREATE INDEX song_id ON song(song_id)", "CREATE INDEX added ON song(date_added)"],
-			"schema_changed": 3
+			"schema_changed": 5
 		},
 		"playlist": {
 			"cols": [
@@ -50,8 +50,8 @@
 				["hub", "TEXT"],
 				["json_id", "INTEGER REFERENCES json (json_id)"]
 			],
-			"indexes": ["CREATE UNIQUE INDEX playlist_key ON song(json_id, playlist_id)", "CREATE INDEX playlist_id ON playlist(playlist_id)"],
-			"schema_changed": 4
+			"indexes": ["CREATE UNIQUE INDEX playlist_key ON playlist(json_id, playlist_id)", "CREATE INDEX playlist_id ON playlist(playlist_id)"],
+			"schema_changed": 7
 		}
 	}
 }
