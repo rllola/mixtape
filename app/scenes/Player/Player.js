@@ -28,6 +28,9 @@ class Player extends Component {
 
     this.props.playlist.on('songChanged', this._loadAndPlay)
 
+    console.log(this.props.site.hubs)
+    console.log(this.hub)
+
     // Need to be done before loading component
     this.props.playlist.fetchSongsByHub(this.hub)
       .then(() => {
