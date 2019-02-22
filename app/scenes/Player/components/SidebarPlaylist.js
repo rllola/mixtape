@@ -42,6 +42,9 @@ class SidebarPlaylist extends Component {
       .catch((err) => {
         console.log(err)
       })
+
+      this.props.site.fetchOptionalFileList(this.props.hub.address)
+        .then((response) => console.log(response))
   }
 
   show () {
