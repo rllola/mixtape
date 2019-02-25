@@ -3,6 +3,7 @@ import { Image, Dimmer, Button, Dropdown, Divider } from 'semantic-ui-react'
 import { inject } from 'mobx-react'
 
 import EditSong from './EditSong'
+import DeleteSong from './DeleteSong'
 import Constants from '../../../../utils/constants'
 import { getUserAddressFromDirectory } from '../../../../utils/utils'
 import IconPeer from '../../../../components/IconPeer/'
@@ -15,6 +16,7 @@ class Thumbnail extends Component {
     this.state = {
       active: false,
       edit: false,
+      delete: false,
       errorThumbnail: false
     }
   }
@@ -31,9 +33,7 @@ class Thumbnail extends Component {
   handleDeleteClicked = (event) => {
     event.stopPropagation()
     event.preventDefault()
-    this.props.playlist.deleteSong(this.props.song.song_id, this.props.song.site, () => {
-      console.log('Done !')
-    })
+    this.setState({delete: true})
   }
 
   handleMuteUserClicked = (event) => {
@@ -56,6 +56,10 @@ class Thumbnail extends Component {
 
   closeEdit = (event) => {
     this.setState({edit: false})
+  }
+
+  closeDelete = (event) => {
+    this.setState({delete: false})
   }
 
   handleErrorThumbnail = () => {
@@ -123,8 +127,9 @@ class Thumbnail extends Component {
               ? '/' + Constants.APP_ID + '/merged-Mixtape/' + this.props.song.site + '/' + this.props.song.directory + '/' + this.props.song.thumbnail_file_name
               : 'assets/img/thumbnail.png'} />
         </Dimmer.Dimmable>
-        {/* TODO: The modal should not be here ! It is getting repeated several time... */}
+        {/* TODO: The modals should not be here ! It is getting repeated several time... */}
         <EditSong open={this.state.edit} close={this.closeEdit} song={this.props.song} />
+        <DeleteSong open={this.state.delete} close={this.closeDelete} song={this.props.song} />
       </div>
     )
   }
