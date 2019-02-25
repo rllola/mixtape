@@ -36,6 +36,24 @@ class Thumbnail extends Component {
     })
   }
 
+  handleMuteUserClicked = (event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    let authAddress = this.props.song.directory.split('/').pop()
+    let certUserId = this.props.song.cert_user_id
+    let reason = 'Muted on Mixtape'
+
+    this.props.site.muteUser(authAddress, certUserId, reason)
+      .then((response) => {
+          if (response === 'ok') {
+            this.props.playlist.fetchSongsByHub(this.props.song.site)
+          }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
   closeEdit = (event) => {
     this.setState({edit: false})
   }
@@ -58,13 +76,19 @@ class Thumbnail extends Component {
       <span onClick={(event) => {event.stopPropagation(); event.preventDefault();}} style={{ color: 'lightGray', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '30px', position: 'absolute', top: '12px', right: '8px', padding: '6px 8px'}}>
         <IconPeer/>{this.props.fileInfo.peer} |
         <Dropdown text='⋮' icon={false} direction='left'>
-          <Dropdown.Menu>
-            <Dropdown.Item text='Mute user' onClick={null} />
-            <Dropdown.Item text='Skip' onClick={null} />
-            <Dropdown.Divider />
-            <Dropdown.Item text='Edit' onClick={this.handleEditClicked} />
-            <Dropdown.Item text='Delete' onClick={this.handleDeleteClicked} />
-          </Dropdown.Menu>
+          { getUserAddressFromDirectory(this.props.song.directory) === this.props.site.siteInfo.auth_address
+           ? (<Dropdown.Menu>
+            <Dropdown.Item text='Mute user' onClick={this.handleMuteUserClicked} />
+            {/*<Dropdown.Item text='Skip' onClick={null} />*/}
+              <Dropdown.Divider />
+              <Dropdown.Item text='Edit' onClick={this.handleEditClicked} />
+              <Dropdown.Item text='Delete' onClick={this.handleDeleteClicked} />
+              </Dropdown.Menu>)
+             : (<Dropdown.Menu>
+               <Dropdown.Item text='Mute user' onClick={this.handleMuteUserClicked} />
+               {/*<Dropdown.Item text='Skip' onClick={null} />*/}
+               </Dropdown.Menu>
+             ) }
         </Dropdown>
       </span>
       <br />

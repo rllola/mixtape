@@ -207,6 +207,10 @@ class Site extends ZeroFrame {
     return this.cmdp('fileWrite', [innerPath, fileEncode(content)])
   }
 
+  muteUser (authAddress, certUserId, reason) {
+    return this.cmdp('muteAdd', [authAddress, certUserId, reason])
+  }
+
   signAndPublish (innerPath) {
     return this.cmdp('siteSign', {inner_path: innerPath})
       .then((res) => {
