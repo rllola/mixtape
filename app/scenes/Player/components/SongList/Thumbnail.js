@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, Dimmer, Button, Dropdown, Divider } from 'semantic-ui-react'
-import { inject } from 'mobx-react'
+import { inject, observer } from 'mobx-react'
 
 import EditSong from './EditSong'
 import DeleteSong from './DeleteSong'
@@ -9,8 +9,9 @@ import { getUserAddressFromDirectory } from '../../../../utils/utils'
 import IconPeer from '../../../../components/IconPeer/'
 
 @inject('site', 'playlist')
+@observer
 class Thumbnail extends Component {
-  constructor () {
+  constructor (props) {
     super()
 
     this.state = {
@@ -82,15 +83,17 @@ class Thumbnail extends Component {
         <Dropdown text='⋮' icon={false} direction='left'>
           { getUserAddressFromDirectory(this.props.song.directory) === this.props.site.siteInfo.auth_address
            ? (<Dropdown.Menu>
-            <Dropdown.Item text='Mute user' onClick={this.handleMuteUserClicked} />
-            {/*<Dropdown.Item text='Skip' onClick={null} />*/}
-              <Dropdown.Divider />
+            {/*<Dropdown.Item text='Mute user' onClick={this.handleMuteUserClicked} />
+            <Dropdown.Item text='Skip' onClick={null} />
+              <Dropdown.Divider />*/}
               <Dropdown.Item text='Edit' onClick={this.handleEditClicked} />
               <Dropdown.Item text='Delete' onClick={this.handleDeleteClicked} />
               </Dropdown.Menu>)
              : (<Dropdown.Menu>
                <Dropdown.Item text='Mute user' onClick={this.handleMuteUserClicked} />
                {/*<Dropdown.Item text='Skip' onClick={null} />*/}
+               <Dropdown.Divider />
+               <Dropdown.Item style={{ color: 'DarkGray'}} text={'Downloaded : ' + (this.props.fileInfo.downloaded_percent || 0) + '%'} />
                </Dropdown.Menu>
              ) }
         </Dropdown>
@@ -102,15 +105,9 @@ class Thumbnail extends Component {
       {this.props.song.artist + ' - ' + this.props.song.title}
       <br />
       <br />
-      { this.props.fileInfo.downloaded_percent || 0 }%
-      <br />
-      {/*getUserAddressFromDirectory(this.props.song.directory) === this.props.site.siteInfo.auth_address
-        ? <Button.Group>
-          <Button onClick={this.handleEditClicked} inverted content='Edit' />
-          <Button onClick={this.handleDeleteClicked} inverted color='red' content='Delete' />
-        </Button.Group>
-        : null*/}
     </div>)
+
+    let showDimmer = active || (this.props.playlist.play.json_id === this.props.song.json_id && this.props.playlist.play.song_id === this.props.song.song_id)
 
     return (
       <div>
@@ -119,7 +116,7 @@ class Thumbnail extends Component {
           onMouseEnter={this.handleShow}
           onMouseLeave={this.handleHide}
           onClick={() => {this.props.playlist.playSong(this.props.index)}}>
-          <Dimmer style={{ cursor: 'pointer' }} active={active} content={content} />
+          <Dimmer style={{ cursor: 'pointer' }} active={showDimmer} content={content} />
           <Image
             onError={this.handleErrorThumbnail}
             style={{ width: '175px', height: '141px' }}
