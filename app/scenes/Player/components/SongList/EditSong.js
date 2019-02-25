@@ -8,6 +8,7 @@ import {
   Message,
   Loader
 } from 'semantic-ui-react'
+import Constants from '../../../../utils/constants'
 import { inject } from 'mobx-react'
 
 @inject('playlist')
@@ -16,9 +17,9 @@ class EditSong extends Component {
     super()
 
     this.state = {
-      artist: '',
-      title: '',
-      srcThumbnail: null,
+      artist: props.song.artist,
+      title: props.song.title,
+      srcThumbnail: '/' + Constants.APP_ID + '/merged-Mixtape/' + props.song.site + '/' + props.song.directory + '/' + props.song.thumbnail_file_name,
       isUploading: false,
       active: false,
       error: null
