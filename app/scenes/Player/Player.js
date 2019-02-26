@@ -57,6 +57,7 @@ class Player extends Component {
         } else {
           this.props.site.mergerSiteAdd([this.hub])
             .then((response) => {
+              this.props.site.showWrapperNotification('The new hub will be added and you will be redirected to the main page in 6 sec.')
               setTimeout(function () {
                 window.location.href = '/' + Constants.APP_ID
               }, 6000)
