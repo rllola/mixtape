@@ -78,7 +78,11 @@ class Thumbnail extends Component {
 
     const content =
     (<div style={contentStyle}>
-      <span onMouseEnter={(event) => {event.target.style.backgroundColor = 'rgba(0,0,0,0.6)'; event.target.style.color = 'white' }} onClick={(event) => {event.stopPropagation(); event.preventDefault();}} style={{ color: 'lightGray', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '30px', position: 'absolute', top: '12px', right: '8px', padding: '6px 8px'}}>
+      <span
+        onMouseEnter={(event) => {event.target.style.backgroundColor = 'rgba(0,0,0,0.8)'; event.target.style.color = 'white' }}
+        onMouseLeave={(event) => {event.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; event.target.style.color = 'lightGray' }}
+        onClick={(event) => {event.stopPropagation(); event.preventDefault();}}
+        style={{ color: 'lightGray', backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '30px', position: 'absolute', top: '12px', right: '8px', padding: '6px 8px'}}>
         <IconPeer/>{this.props.fileInfo.peer} |
         <Dropdown text='⋮' icon={false} direction='left'>
           { getUserAddressFromDirectory(this.props.song.directory) === this.props.site.siteInfo.auth_address
