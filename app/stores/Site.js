@@ -109,9 +109,10 @@ class Site extends ZeroFrame {
   }
 
   fetchHubs () {
-    this.cmd('mergerSiteList', [true], (data) => {
-      this.setHubs(Object.entries(data))
-    })
+    return this.cmdp('mergerSiteList', [true])
+      .then((data) => {
+        this.setHubs(Object.entries(data))
+      })
   }
 
   fetchOptionalFileList (hub) {
@@ -209,6 +210,10 @@ class Site extends ZeroFrame {
 
   muteUser (authAddress, certUserId, reason) {
     return this.cmdp('muteAdd', [authAddress, certUserId, reason])
+  }
+
+  mergerSiteAdd (addresses) {
+    return this.cmdp('mergerSiteAdd', [addresses])
   }
 
   signAndPublish (innerPath) {

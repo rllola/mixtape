@@ -6,6 +6,8 @@ import { observable } from 'mobx'
 import SidebarPlaylist from './components/SidebarPlaylist'
 import BackButton from '../../components/BackButton'
 
+import Constants from '../../utils/constants'
+
 @inject('site', 'playlist')
 @observer
 class Player extends Component {
@@ -28,26 +30,39 @@ class Player extends Component {
 
     this.props.playlist.on('songChanged', this._loadAndPlay)
 
-    console.log(this.props.site.hubs)
-    console.log(this.hub)
-
-    // Need to be done before loading component
-    this.props.playlist.fetchSongsByHub(this.hub)
+    this.props.site.fetchHubs()
       .then(() => {
-        if (this.props.playlist.src) {
-          this.player.src = this.props.playlist.src
-        }
+        let hub = this.props.site.hubs.filter((element) => {
+          return element[0] === this.hub
+        })
+        if (hub.length > 0) {
+          // Need to be done before loading component
+          this.props.playlist.fetchSongsByHub(this.hub)
+            .then(() => {
+              if (this.props.playlist.src) {
+                this.player.src = this.props.playlist.src
+              }
 
-        // hacky
-        if (!this.hubDetail) {
-          this.props.site.hubs.forEach((element) => {
-            if (element[0] === this.hub) {
-              this.hubDetail = element[1]
-            }
-          })
+              // hacky
+              if (!this.hubDetail) {
+                this.props.site.hubs.forEach((element) => {
+                  if (element[0] === this.hub) {
+                    this.hubDetail = element[1]
+                  }
+                })
 
+              }
+              this.fetching = false
+            })
+        } else {
+          this.props.site.mergerSiteAdd([this.hub])
+            .then((response) => {
+              this.props.site.showWrapperNotification('The new hub will be added and you will be redirected to the main page in 6 sec.')
+              setTimeout(function () {
+                window.location.href = '/' + Constants.APP_ID
+              }, 6000)
+            })
         }
-        this.fetching = false
       })
   }
 
