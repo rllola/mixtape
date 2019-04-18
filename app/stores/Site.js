@@ -29,8 +29,19 @@ class Site extends ZeroFrame {
       this.setSiteInfo(info)
 
       if (info.settings.permissions.indexOf('Merger:Mixtape') === -1) {
-        this.cmd('wrapperPermissionAdd', 'Merger:Mixtape')
+        this.cmd('wrapperPermissionAdd', 'Merger:Mixtape', (res) => {
+          if (res === 'ok') {
+            this.mergerSiteAdd('1Nwdm8MooUizdkgaUdAdqqjyK1xXjY57PK')
+              .then((res) => {
+                if (res === 'ok') {
+                  // Fetch the playlists which can be downloaded
+                  setTimeout(() => this.fetchMixtapeIndexPlaylist(), 2000)
+                }
+              })
+          }
+        })
       }
+
     })
 
     this.eventEmitter = new EventEmitter()
@@ -111,7 +122,10 @@ class Site extends ZeroFrame {
   fetchHubs () {
     return this.cmdp('mergerSiteList', [true])
       .then((data) => {
-        this.setHubs(Object.entries(data))
+        data = Object.entries(data)
+        this.setHubs(data)
+      }).catch((err) => {
+        console.log(err)
       })
   }
 
@@ -271,6 +285,7 @@ class Site extends ZeroFrame {
       })
   }
 
+  // Bad bad bad
   fetchMixtapeIndexPlaylist () {
     let query = 'SELECT * FROM playlist'
     return new Promise((resolve, reject) => {

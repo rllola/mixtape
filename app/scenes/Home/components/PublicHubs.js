@@ -8,6 +8,16 @@ const MAX_PUBLIC_HUBS_SHOWN = 9
 @inject('site')
 @observer
 class PublicHubs extends Component {
+  onHubClicked = (event, address) => {
+    event.preventDefault()
+    this.props.site.mergerSiteAdd(address)
+      .then((res) => {
+        if (res === 'ok') {
+          this.props.site.fetchHubs()
+        }
+      })
+  }
+
   render () {
     return (
       <Grid>
@@ -20,9 +30,9 @@ class PublicHubs extends Component {
                     <Card
                       key={value.hub_address}
                       link
-                      href={'/' + value.hub_address}
                       header={value.title}
                       meta={value.creator}
+                      onClick={(event) => this.onHubClicked(event, value.hub_address)}
                       description={value.description} />
                     )
                   })
