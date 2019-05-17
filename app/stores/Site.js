@@ -231,13 +231,13 @@ class Site extends ZeroFrame {
   }
 
   signAndPublish (innerPath) {
-    return this.cmdp('siteSign', {inner_path: innerPath})
+    return this.cmdp('siteSign', ["stored", innerPath])
       .then((res) => {
         if (res !== 'ok') {
           throw new Error('Failed to sign content')
         }
 
-        return this.cmdp('sitePublish', {inner_path: innerPath})
+        return this.cmdp('sitePublish', ["stored", innerPath])
       })
   }
 
@@ -281,7 +281,27 @@ class Site extends ZeroFrame {
       .then((content) => {
         content = JSON.parse(content)
 
-        console.log(content)
+        console.log(content.signers)
+
+        if (!content.signers) {
+          content.signers = [this.siteInfo.auth_address]
+        }
+
+        content.user_contents.permissions = permissions
+        console.log(content.user_contents.permissions)
+
+        return this.editFile(innerPath, content)
+          .then((res) => {
+            if (res !== 'ok') {
+              throw new Error('Fail to edit')
+            }
+
+            // We modified we need to update hubs info now
+            this.fetchHubs()
+
+            return this.signAndPublish(innerPath)
+          })
+
       })
   }
 
