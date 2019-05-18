@@ -12,19 +12,27 @@ class EditModal extends Component {
       title: null,
       description: null,
       permissions: [],
-      permissionRules: []
+      permissionRules: [],
+      permissionFormAddress: '',
+      permissionFormMaxSize: '',
+      permissionFormMaxOptionalSize: '',
+      addFormShown: false
     }
   }
 
   componentDidMount () {
     this.props.playlist.getHubRules(this.props.hub.address)
       .then((rules) => {
-        rules = JSON.parse(rules)
-        let permissions = Object.entries(rules.user_contents.permissions)
-        let permissionRules = Object.entries(rules.user_contents.permission_rules)
-
-        this.setState({permissions: permissions, permissionRules: permissionRules})
+        this.updatePermissionState(rules)
       })
+  }
+
+  updatePermissionState = (rules) => {
+    rules = JSON.parse(rules)
+    let permissions = Object.entries(rules.user_contents.permissions)
+    let permissionRules = Object.entries(rules.user_contents.permission_rules)
+
+    this.setState({permissions: permissions, permissionRules: permissionRules})
   }
 
   handleTitleChange (event) {
@@ -52,6 +60,68 @@ class EditModal extends Component {
       })
   }
 
+  handlePermissionFormAddressChange (event) {
+    this.setState({permissionFormAddress: event.target.value})
+  }
+
+  handlePermissionFormMaxSizeChange (event) {
+    this.setState({permissionFormMaxSize: event.target.value})
+  }
+
+  handlePermissionFormMaxOptionalSizeChange (event) {
+    this.setState({permissionFormMaxOptionalSize: event.target.value})
+  }
+
+  handleAddPermission () {
+    let permissions = {}
+
+    this.state.permissions.map((value) => {
+      permissions[value[0]] = value[1]
+    })
+
+
+    permissions[this.state.permissionFormAddress] = {max_size: Number(this.state.permissionFormMaxSize)}
+
+
+    if (Number(this.state.permissionFormMaxOptionalSize) != 0 || this.state.permissionFormMaxOptionalSize === '0' ) {
+      permissions[this.state.permissionFormAddress]['max_size_optional'] = Number(this.state.permissionFormMaxOptionalSize)
+    }
+
+    this.props.site.editPermission(this.props.hub.address, permissions)
+      .then(() => {
+        this.setState({addFormShown: false})
+        this.props.playlist.getHubRules(this.props.hub.address)
+          .then((rules) => {
+            this.updatePermissionState(rules)
+          })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
+  handleRemovePermission (index) {
+    let permissions = {}
+
+    this.state.permissions.map((value, i) => {
+      if (index !== i) {
+        permissions[value[0]] = value[1]
+      }
+    })
+
+    this.props.site.editPermission(this.props.hub.address, permissions)
+      .then(() => {
+        this.setState({addFormShown: false})
+        this.props.playlist.getHubRules(this.props.hub.address)
+          .then((rules) => {
+            this.updatePermissionState(rules)
+          })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   render () {
     return (
       <Modal open={this.props.open} centered={false}>
@@ -74,6 +144,7 @@ class EditModal extends Component {
                       <Table.HeaderCell>Address/Id</Table.HeaderCell>
                       <Table.HeaderCell>Max Size</Table.HeaderCell>
                       <Table.HeaderCell>Max Optional Size</Table.HeaderCell>
+                      <Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
@@ -82,12 +153,48 @@ class EditModal extends Component {
                         <Table.Row key={index}>
                           <Table.Cell>{element[0]}</Table.Cell>
                           <Table.Cell>{element[1].max_size}</Table.Cell>
-                          <Table.Cell>{element[1].max_size_optional || 'N/A' }</Table.Cell>
+                          <Table.Cell>{typeof(element[1].max_size_optional) !== 'undefined' ? element[1].max_size_optional : 'N/A' }</Table.Cell>
+                          <Table.Cell>
+                            <Button size='tiny' inverted color='red' onClick={() => this.handleRemovePermission(index)}>Remove</Button>
+                          </Table.Cell>
                         </Table.Row>
                       )
                     })}
+                    {this.state.addFormShown ? <Table.Row key="9999">
+                          <Table.Cell>
+                            <Form.Field>
+                              <input
+                                value={this.state.permissionFormAddress}
+                                onChange={this.handlePermissionFormAddressChange.bind(this)}
+                                placeholder='lola@zeroid.bit'/>
+                            </Form.Field>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Form.Field>
+                              <input type='number'
+                                value={this.state.permissionFormMaxSize}
+                                onChange={this.handlePermissionFormMaxSizeChange.bind(this)}
+                                placeholder='999999'
+                                required />
+                            </Form.Field>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Form.Field>
+                              <input type='number'
+                                value={this.state.permissionFormMaxOptionalSize}
+                                onChange={this.handlePermissionFormMaxOptionalSizeChange.bind(this)}
+                                placeholder='N/A'/>
+                            </Form.Field>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Button size='tiny' inverted color='green' onClick={this.handleAddPermission.bind(this)}>Add</Button>
+                            <Button size='tiny' inverted color='red' onClick={() => this.setState({addFormShown: false})}>Cancel</Button>
+                          </Table.Cell>
+                      </Table.Row>
+                    : null }
                   </Table.Body>
                 </Table>
+                <Button floated='right' onClick={() => this.setState({addFormShown: true})}>Add</Button>
               </Form.Field>
               <Form.Field>
                 <label>Permissions Rules</label>
