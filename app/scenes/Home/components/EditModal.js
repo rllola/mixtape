@@ -23,12 +23,16 @@ class EditModal extends Component {
   componentDidMount () {
     this.props.playlist.getHubRules(this.props.hub.address)
       .then((rules) => {
-        rules = JSON.parse(rules)
-        let permissions = Object.entries(rules.user_contents.permissions)
-        let permissionRules = Object.entries(rules.user_contents.permission_rules)
-
-        this.setState({permissions: permissions, permissionRules: permissionRules})
+        this.updatePermissionState(rules)
       })
+  }
+
+  updatePermissionState = (rules) => {
+    rules = JSON.parse(rules)
+    let permissions = Object.entries(rules.user_contents.permissions)
+    let permissionRules = Object.entries(rules.user_contents.permission_rules)
+
+    this.setState({permissions: permissions, permissionRules: permissionRules})
   }
 
   handleTitleChange (event) {
@@ -80,10 +84,36 @@ class EditModal extends Component {
 
     this.props.site.editPermission(this.props.hub.address, permissions)
       .then(() => {
-
+        this.setState({addFormShown: false})
+        this.props.playlist.getHubRules(this.props.hub.address)
+          .then((rules) => {
+            this.updatePermissionState(rules)
+          })
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error(err)
+      })
+  }
 
+  handleRemovePermission (index) {
+    let permissions = {}
+
+    this.state.permissions.map((value, i) => {
+      if (index !== i) {
+        permissions[value[0]] = value[1]
+      }
+    })
+
+    this.props.site.editPermission(this.props.hub.address, permissions)
+      .then(() => {
+        this.setState({addFormShown: false})
+        this.props.playlist.getHubRules(this.props.hub.address)
+          .then((rules) => {
+            this.updatePermissionState(rules)
+          })
+      })
+      .catch((err) => {
+        console.error(err)
       })
   }
 
@@ -120,8 +150,7 @@ class EditModal extends Component {
                           <Table.Cell>{element[1].max_size}</Table.Cell>
                           <Table.Cell>{element[1].max_size_optional || 'N/A' }</Table.Cell>
                           <Table.Cell>
-                            <Button size='tiny' inverted color='red' onClick={() => console.log('delete')}>Delete</Button>
-                            <Button size='tiny' inverted color='blue' onClick={() => console.log('edit')}>Edit</Button>
+                            <Button size='tiny' inverted color='red' onClick={() => this.handleRemovePermission(index)}>Remove</Button>
                           </Table.Cell>
                         </Table.Row>
                       )
