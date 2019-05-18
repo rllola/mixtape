@@ -14,8 +14,8 @@ class EditModal extends Component {
       permissions: [],
       permissionRules: [],
       permissionFormAddress: '',
-      permissionFormMaxSize: 0,
-      permissionFormMaxOptionalSize: 0,
+      permissionFormMaxSize: '',
+      permissionFormMaxOptionalSize: '',
       addFormShown: false
     }
   }
@@ -80,7 +80,12 @@ class EditModal extends Component {
     })
 
 
-    permissions[this.state.permissionFormAddress] = {max_size: this.state.permissionFormMaxSize}
+    permissions[this.state.permissionFormAddress] = {max_size: Number(this.state.permissionFormMaxSize)}
+
+
+    if (Number(this.state.permissionFormMaxOptionalSize) != 0 || this.state.permissionFormMaxOptionalSize === '0' ) {
+      permissions[this.state.permissionFormAddress]['max_size_optional'] = Number(this.state.permissionFormMaxOptionalSize)
+    }
 
     this.props.site.editPermission(this.props.hub.address, permissions)
       .then(() => {
@@ -148,7 +153,7 @@ class EditModal extends Component {
                         <Table.Row key={index}>
                           <Table.Cell>{element[0]}</Table.Cell>
                           <Table.Cell>{element[1].max_size}</Table.Cell>
-                          <Table.Cell>{element[1].max_size_optional || 'N/A' }</Table.Cell>
+                          <Table.Cell>{typeof(element[1].max_size_optional) !== 'undefined' ? element[1].max_size_optional : 'N/A' }</Table.Cell>
                           <Table.Cell>
                             <Button size='tiny' inverted color='red' onClick={() => this.handleRemovePermission(index)}>Remove</Button>
                           </Table.Cell>
@@ -169,7 +174,8 @@ class EditModal extends Component {
                               <input type='number'
                                 value={this.state.permissionFormMaxSize}
                                 onChange={this.handlePermissionFormMaxSizeChange.bind(this)}
-                                placeholder='999999'/>
+                                placeholder='999999'
+                                required />
                             </Form.Field>
                           </Table.Cell>
                           <Table.Cell>
@@ -177,7 +183,7 @@ class EditModal extends Component {
                               <input type='number'
                                 value={this.state.permissionFormMaxOptionalSize}
                                 onChange={this.handlePermissionFormMaxOptionalSizeChange.bind(this)}
-                                placeholder='999999'/>
+                                placeholder='N/A'/>
                             </Form.Field>
                           </Table.Cell>
                           <Table.Cell>
