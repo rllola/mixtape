@@ -8,6 +8,16 @@
 * http://opensource.org/licenses/MIT
 *
 */
+
+/* Extra font */
+@font-face {
+    font-family: 'Mr Dafoe';
+    src: url("../fonts/mr-dafoe-v6-latin-regular.eot");
+    src: url("../fonts/mr-dafoe-v6-latin-regular.eot?#iefix") format('embedded-opentype'),
+         url("../fonts/mr-dafoe-v6-latin-regular.woff") format('woff'),
+         url("../fonts/mr-dafoe-v6-latin-regular.ttf")  format('truetype');
+}
+
 /* latin-ext */
 @font-face {
   font-family: 'Lato';
