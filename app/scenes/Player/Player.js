@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Sidebar, Grid, Loader } from 'semantic-ui-react'
+import { Sidebar, Grid, Loader, Header } from 'semantic-ui-react'
 import { inject, observer } from 'mobx-react'
 import { observable } from 'mobx'
 
@@ -117,15 +117,16 @@ class Player extends Component {
           <BackButton />
 
         </Sidebar>
-        <Sidebar.Pusher as={Grid} padded style={{backgroundImage: 'url(assets/img/1510335890477.jpg)'}}>
+        <Sidebar.Pusher as={Grid} padded style={{backgroundImage: 'url(assets/img/pineapples.jpg)', backgroundSize: 'cover'}}>
 
           {/* Main view with player */}
           <Grid.Row>
             <Grid.Column stretched floated='left' width={1} verticalAlign='middle'>
               <span onClick={this.handleToggleClick.bind(this)} style={togglerStyle}>  &lt; </span>
             </Grid.Column>
-            <Grid.Column width={15} textAlign='center' onClick={this.pause}>
+            <Grid.Column width={15} textAlign='center' style={{ height: '100%'}} onClick={this.pause}>
               <audio id='audioPlayer' onEnded={this.onEnded.bind(this)} controls />
+              <Header as='h1' style={{ fontWeight:'normal',transform: 'rotate(-12deg)', color: 'white', fontSize: '15rem', marginTop: '30vh', textShadow: '1px 1px 2px rgba(0,0,0,0.4)', fontFamily: 'Mr Dafoe' }}>Mixtape*</Header>
             </Grid.Column>
           </Grid.Row>
 
