@@ -155,7 +155,7 @@ class Site extends ZeroFrame {
       CAST(round((julianday(date_added)- 2440587.5)*86400.0) AS integer) AS date_added, \
       artist || ' - ' || title AS title, \
       'New song added !' AS body, \
-      '?' AS url \
+      '?playlist/"+hub+"' AS url \
       FROM song JOIN json ON song.json_id = json.json_id WHERE json.site='" + hub + "'"
     let params = ['']
 
