@@ -125,9 +125,9 @@ class Player extends Component {
               <span onClick={this.handleToggleClick.bind(this)} style={togglerStyle}>  &lt; </span>
             </Grid.Column>
             <Grid.Column width={15} textAlign='center' style={{ height: '100%'}} onClick={this.pause}>
-              <audio id='audioPlayer' onEnded={this.onEnded.bind(this)} controls />
               <Header as='h1' style={{ fontWeight:'normal',transform: 'rotate(-12deg)', color: 'white', fontSize: '15rem', marginTop: '30vh', textShadow: '1px 1px 2px rgba(0,0,0,0.4)', fontFamily: 'Mr Dafoe' }}>Mixtape*</Header>
-            </Grid.Column>
+              <audio id='audioPlayer' style={{position: 'absolute', bottom: '20px', marginLeft: '-96px'}} onEnded={this.onEnded.bind(this)} controls />
+          </Grid.Column>
           </Grid.Row>
 
         </Sidebar.Pusher>
