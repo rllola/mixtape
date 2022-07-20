@@ -19,7 +19,7 @@
     "sanitize-filename": "^1.6.1",
     "semantic-ui-react": "^0.83.0",
     "ssri": "^5.3.0",
-    "terser": "^3.14.1",
+    "terser": "^4.8.1",
     "zeroframe": "^1.2.0"
   },
   "devDependencies": {
